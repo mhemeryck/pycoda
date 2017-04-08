@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import re
 from abc import ABCMeta, abstractmethod
+from datetime import datetime
 
 from six import with_metaclass
 
@@ -117,3 +118,26 @@ class NumericField(StringField):
     def loads(self, string):
         self.value = int(self._parse(string))
 
+
+class DateField(StringField):
+    def __init__(self, position, length=6, value=None, tag=None,
+                 pad='', align='<', date_format='%d%m%y'):
+        super(DateField, self).__init__(position, length, value=value, tag=tag,
+                                        pad=pad, align=align)
+        self.date_format = date_format
+
+    def _regex(self):
+        return r'^(?P<value>\d{{{self.length}}})$'.format(self=self)
+
+    def _parse(self, string):
+        return super(DateField, self)._parse(string)
+
+    def dumps(self):
+        if self.value is None:
+            raise ValueError('No valid date value available')
+        dump_format = '{self.value:{self.date_format}}'
+        return dump_format.format(self=self)[:self.length]
+
+    def loads(self, string):
+        date_string = self._parse(string)
+        self.value = datetime.strptime(date_string, self.date_format).date()
