@@ -161,3 +161,94 @@ class ZeroesFieldTest(TestCase):
         field.loads(field.dumps())
         assert field.value == '   '
 
+
+class NumericFieldTest(TestCase):
+    def test_dumps_length_value_equal(self):
+        field = NumericField(0, 1, value=1)
+        assert field.dumps() == '1'
+
+    def test_dumps_length_longer_than_value(self):
+        field = NumericField(0, 2, value=1)
+        assert field.dumps() == '1 '
+
+    def test_dumps_length_shorter_than_value(self):
+        field = NumericField(0, 1, value=12)
+        assert field.dumps() == '1'
+
+    def test_loads_length_string_equal(self):
+        field = NumericField(0, 10)
+        field.loads('1234567890')
+        assert field.value == 1234567890
+
+    def test_loads_length_longer_than_string(self):
+        field = NumericField(0, 2)
+        with self.assertRaises(ValueError):
+            field.loads('1')
+
+    def test_loads_trailing_space(self):
+        field = NumericField(0, 2)
+        field.loads('1 ')
+        assert field.value == 1
+
+    def test_loads_leading_space(self):
+        field = NumericField(0, 2)
+        field.loads(' 1')
+        assert field.value == 1
+
+    def test_loads_length_shorter_than_string(self):
+        field = NumericField(0, 1)
+        with self.assertRaises(ValueError):
+            field.loads('11')
+
+    def test_loads_dumps_equal_same_length(self):
+        field = NumericField(0, 10)
+        field.loads('9876543210')
+        assert field.dumps() == '9876543210'
+
+    def test_loads_dumps_equal_shorter(self):
+        field = NumericField(0, 10)
+        field.loads('12345     ')
+        assert field.dumps() == '12345     '
+
+    def test_loads_from_dumps(self):
+        field = NumericField(0, 6, value=123)
+        field.loads(field.dumps())
+        assert field.value == 123
+
+    def test_loads_leading_head(self):
+        field = NumericField(0, 6, head='abc')
+        field.loads('abc' + '123')
+        assert field.value == 123
+
+    def test_loads_trailing_tail(self):
+        field = NumericField(0, 6, tail='abc')
+        field.loads('123' + 'abc')
+        assert field.value == 123
+
+    def test_loads_leading_head_and_trailing_tail(self):
+        field = NumericField(0, 12, head='000', tail='QWERTY')
+        field.loads('000123QWERTY')
+        assert field.value == 123
+
+    def test_dumps_leading_head(self):
+        field = NumericField(0, 6, value=456, head='lol')
+        assert field.dumps() == 'lol456'
+
+    def test_dumps_trailing_tail(self):
+        field = NumericField(0, 6, value=456, tail='lol')
+        assert field.dumps() == '456lol'
+
+    def test_dumps_leading_head_trailing_tail(self):
+        field = NumericField(0, 16, value=12357, head='asddfg', tail='zxcvb')
+        assert field.dumps() == 'asddfg12357zxcvb'
+
+    def test_loads_head_align_pad(self):
+        field = NumericField(0, 11, head='0', pad='0', align='>')
+        field.loads('00886946917')
+        assert field.value == 886946917
+
+    def test_loads_dumps_head_align_pad(self):
+        field = NumericField(0, 11, head='0', pad='0', align='>')
+        field.loads('00886946917')
+        assert field.dumps() == '00886946917'
+

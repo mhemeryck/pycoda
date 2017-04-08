@@ -90,3 +90,30 @@ class ZeroesField(StringField):
     def loads(self, string):
         super(ZeroesField, self).loads(string)
 
+
+class NumericField(StringField):
+    def __init__(self, position, length, value=None, tag=None,
+                 pad='', align='<', head='', tail=''):
+        super(NumericField, self).__init__(position, length,
+                                           value=value, tag=tag,
+                                           pad=pad, align=align)
+        self.head = head
+        self.tail = tail
+
+    def _regex(self):
+        length = self.length - len(self.head) - len(self.tail)
+        return r'^({self.head})?(?P<value>[\d\s]{{{length}}})({self.tail})?$'.format(self=self, length=length)
+
+    def _parse(self, string):
+        return super(NumericField, self)._parse(string)
+
+    def dumps(self):
+        value = self.value if self.value else 0
+        length = self.length - len(self.head) - len(self.tail)
+        dump_format = '{value:{self.pad}{self.align}{length}d}'
+        value_string = dump_format.format(self=self, value=value, length=length)[:length]
+        return '{self.head}{value_string}{self.tail}'.format(self=self, value_string=value_string)
+
+    def loads(self, string):
+        self.value = int(self._parse(string))
+
