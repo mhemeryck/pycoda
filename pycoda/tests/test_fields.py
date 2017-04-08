@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from datetime import date
 from unittest import TestCase
 
 from pycoda.fields import (NumericField, StringField, ZeroesField, DateField, EmptyField)
@@ -252,3 +253,41 @@ class NumericFieldTest(TestCase):
         field.loads('00886946917')
         assert field.dumps() == '00886946917'
 
+
+class DateFieldTest(TestCase):
+    def test_dumps_empty(self):
+        field = DateField(0)
+        with self.assertRaises(ValueError):
+            field.dumps()
+
+    def test_loads(self):
+        field = DateField(0)
+        field.loads('280386')
+        assert field.value == date(1986, 3, 28)
+
+    def test_dumps(self):
+        field = DateField(0, value=date(1986, 3, 28))
+        assert field.dumps() == '280386'
+
+    def test_loads_21st_century(self):
+        field = DateField(0)
+        field.loads('050417')
+        assert field.value == date(2017, 4, 5)
+
+    def test_dumps_21st_century(self):
+        field = DateField(0, value=date(2017, 4, 5))
+        assert field.dumps() == '050417'
+
+    def test_loads_from_dumps(self):
+        field = DateField(0, value=date(1986, 3, 28))
+        field.loads(field.dumps())
+        assert field.value == date(1986, 3, 28)
+
+    def test_dumps_alternate_date_format(self):
+        field = DateField(0, 8, value=date(2017, 4, 5), date_format='%Y%m%d')
+        assert field.dumps() == '20170405'
+
+    def test_loads_alternate_date_format(self):
+        field = DateField(0, 8, date_format='%Y%m%d')
+        field.loads('20170405')
+        assert field.value == date(2017, 4, 5)
