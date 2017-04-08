@@ -129,3 +129,35 @@ class StringFieldTest(TestCase):
         field = StringField(0, 3, pad=0)
         assert field.dumps() == '000'
 
+
+class EmptyFieldTest(TestCase):
+    def test_loads(self):
+        field = EmptyField(0, 4)
+        field.loads('    ')
+        assert field.value == '    '
+
+    def test_dumps(self):
+        field = EmptyField(0, 4)
+        assert field.dumps() == '    '
+
+    def test_load_from_dumps(self):
+        field = EmptyField(0, 4)
+        field.loads(field.dumps())
+        assert field.value == '    '
+
+
+class ZeroesFieldTest(TestCase):
+    def test_loads(self):
+        field = ZeroesField(0, 3)
+        field.loads('000')
+        assert field.value == '000'
+
+    def test_dumps(self):
+        field = ZeroesField(0, 10)
+        assert field.dumps() == '0' * 10
+
+    def test_loads_from_dumps(self):
+        field = StringField(0, 3)
+        field.loads(field.dumps())
+        assert field.value == '   '
+

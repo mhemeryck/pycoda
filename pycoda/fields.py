@@ -56,3 +56,37 @@ class StringField(Field):
     def loads(self, string):
         self.value = self._parse(string)
 
+
+class EmptyField(StringField):
+    def __init__(self, position, length, tag=None):
+        super(EmptyField, self).__init__(position, length, value=None, tag=tag)
+
+    def _regex(self):
+        return super(EmptyField, self)._regex()
+
+    def _parse(self, string):
+        return super(EmptyField, self)._parse(string)
+
+    def dumps(self):
+        return super(EmptyField, self).dumps()
+
+    def loads(self, string):
+        super(EmptyField, self).loads(string)
+
+
+class ZeroesField(StringField):
+    def __init__(self, position, length, tag=None):
+        super(ZeroesField, self).__init__(position, length, tag=tag, pad='0')
+
+    def _regex(self):
+        return super(ZeroesField, self)._regex()
+
+    def _parse(self, string):
+        return super(ZeroesField, self)._parse(string)
+
+    def dumps(self):
+        return super(ZeroesField, self).dumps()
+
+    def loads(self, string):
+        super(ZeroesField, self).loads(string)
+
