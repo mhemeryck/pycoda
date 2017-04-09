@@ -111,3 +111,49 @@ class InitialRecord(Record):
 
     def related_reference(self):
         return self._related_reference_field.value
+
+
+class OldBalanceRecord(Record):
+    RECORD_IDENTIFICATION = 1
+
+    def __init__(self,
+                 account_structure=None,
+                 serial_number=None,
+                 account_number=None,
+                 balance_sign=None,
+                 old_balance=None,
+                 balance_date=None,
+                 account_holder_name=None,
+                 account_description=None,
+                 bank_statement_serial_number=None):
+        super(OldBalanceRecord, self).__init__()
+
+        self._identification_field = NumericField(0, 1, value=OldBalanceRecord.RECORD_IDENTIFICATION)
+        self._account_structure_field = NumericField(1, 1, value=account_structure)
+        self._serial_number_field = NumericField(2, 3, value=serial_number, tag='28c/1')
+        self._account_number_field = StringField(5, 37, value=account_number)
+        self._balance_sign_field = NumericField(42, 1, value=balance_sign, tag='60F/1')
+        self._old_balance_field = NumericField(43, 15, value=old_balance, tag='60F/4', pad='0', align='>')
+        self._balance_date_field = DateField(58, 6, value=balance_date, tag='60F/2')
+        self._account_holder_name_field = StringField(64, 26, value=account_holder_name)
+        self._account_description_field = StringField(90, 35, value=account_description)
+        self._bank_statement_serial_number_field = NumericField(125, 3, value=bank_statement_serial_number,
+                                                                pad=0, align='>')
+        self._fields = (
+            self._identification_field,
+            self._account_structure_field,
+            self._serial_number_field,
+            self._account_number_field,
+            self._balance_sign_field,
+            self._old_balance_field,
+            self._balance_date_field,
+            self._account_holder_name_field,
+            self._account_description_field,
+            self._bank_statement_serial_number_field,
+        )
+
+    def dumps(self):
+        return super(OldBalanceRecord, self).dumps()
+
+    def loads(self, string):
+        super(OldBalanceRecord, self).loads(string)

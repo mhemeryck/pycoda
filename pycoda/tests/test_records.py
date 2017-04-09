@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from datetime import date
 from unittest import TestCase
 
-from pycoda.records import InitialRecord
+from pycoda.records import InitialRecord, OldBalanceRecord
 
 
 
@@ -106,3 +106,25 @@ class InitialRecordTest(TestCase):
     def test_related_reference(self):
         record = InitialRecord(related_reference='qwerty')
         assert record.related_reference() == 'qwerty'
+
+
+class OldBalanceRecordTest(TestCase):
+    def test_field_positions_are_consecutive(self):
+        record = OldBalanceRecord()
+        for field, next_field in zip(record._fields[:-1], record._fields[1:]):
+            assert field.position + field.length == next_field.position
+
+    def test_example_loads_dumps_success_payment(self):
+        record = OldBalanceRecord()
+        record.loads(SUCCESS_PAYMENT_RAW[129:257])
+        assert record.dumps() == SUCCESS_PAYMENT_RAW[129:257]
+
+    def test_example_loads_dumps_fail_payment(self):
+        record = OldBalanceRecord()
+        record.loads(FAIL_PAYMENT_RAW[129:257])
+        assert record.dumps() == FAIL_PAYMENT_RAW[129:257]
+
+    def test_example_loads_dumps_success_ogm(self):
+        record = OldBalanceRecord()
+        record.loads(SUCCESS_OGM_RAW[129:257])
+        assert record.dumps() == SUCCESS_OGM_RAW[129:257]
