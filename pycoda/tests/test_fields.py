@@ -130,6 +130,25 @@ class StringFieldTest(TestCase):
         field = StringField(0, 3, pad=0)
         assert field.dumps() == '000'
 
+    def test_loads_hyphen(self):
+        field = StringField(0, 11)
+        field.loads('some-string')
+        assert field.value == 'some-string'
+
+    def test_dumps_hyphen(self):
+        field = StringField(0, 7, value='foo-bar')
+        assert field.dumps() == 'foo-bar'
+
+    def test_loads_from_dumps_hyphen(self):
+        field = StringField(0, 7, value='foo-bar')
+        field.loads(field.dumps())
+        assert field.value == 'foo-bar'
+
+    def test_loads_extra_space_hyphen(self):
+        field = StringField(0, 14)
+        field.loads('some-string   ')
+        assert field.value == 'some-string   '
+
 
 class EmptyFieldTest(TestCase):
     def test_loads(self):
