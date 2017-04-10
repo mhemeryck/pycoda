@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from pycoda.fields import NumericField, StringField, ZeroesField, DateField, EmptyField
+from pycoda.fields import NumericField, StringField, ZeroesField, DateField, EmptyField, BalanceField
 
 
 class Record(object):
@@ -133,7 +133,7 @@ class OldBalanceRecord(Record):
         self._serial_number_field = NumericField(2, 3, value=serial_number, tag='28c/1')
         self._account_number_field = StringField(5, 37, value=account_number)
         self._balance_sign_field = NumericField(42, 1, value=balance_sign, tag='60F/1')
-        self._old_balance_field = NumericField(43, 15, value=old_balance, tag='60F/4', pad='0', align='>')
+        self._old_balance_field = BalanceField(43, value=old_balance, tag='60F/4')
         self._balance_date_field = DateField(58, 6, value=balance_date, tag='60F/2')
         self._account_holder_name_field = StringField(64, 26, value=account_holder_name)
         self._account_description_field = StringField(90, 35, value=account_description)
