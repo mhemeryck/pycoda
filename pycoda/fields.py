@@ -5,6 +5,7 @@ import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 
+from decimal import Decimal
 from six import with_metaclass
 
 
@@ -141,3 +142,29 @@ class DateField(StringField):
     def loads(self, string):
         date_string = self._parse(string)
         self.value = datetime.strptime(date_string, self.date_format).date()
+
+
+class BalanceField(Field):
+    LENGTH = 15
+    DECIMAL_PLACES = 3
+
+    def __init__(self, position, value=None, tag=None, pad='0'):
+        super(BalanceField, self).__init__(position, BalanceField.LENGTH,
+                                           value=value, tag=tag)
+        self.pad = pad
+
+    def _regex(self):
+        raise NotImplementedError()
+
+    def _parse(self, string):
+        raise NotImplementedError()
+
+    def dumps(self):
+        value_tuple = self.value.as_tuple()
+        shifted = Decimal((value_tuple.sign, value_tuple.digits, 0))
+        return '{shifted:{self.pad}{self.LENGTH}f}'.format(self=self, shifted=shifted)
+
+    def loads(self, string):
+        parsed = Decimal(string)
+        parsed_tuple = parsed.as_tuple()
+        self.value = Decimal((parsed_tuple.sign, parsed_tuple.digits, -BalanceField.DECIMAL_PLACES))

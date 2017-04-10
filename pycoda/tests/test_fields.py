@@ -4,7 +4,9 @@ from __future__ import unicode_literals
 from datetime import date
 from unittest import TestCase
 
-from pycoda.fields import (NumericField, StringField, ZeroesField, DateField, EmptyField)
+from decimal import Decimal
+
+from pycoda.fields import (NumericField, StringField, ZeroesField, DateField, EmptyField, BalanceField)
 
 
 class StringFieldTest(TestCase):
@@ -310,3 +312,24 @@ class DateFieldTest(TestCase):
         field = DateField(0, 8, date_format='%Y%m%d')
         field.loads('20170405')
         assert field.value == date(2017, 4, 5)
+
+
+class BalanceFieldTest(TestCase):
+    def test_loads(self):
+        field = BalanceField(0)
+        field.loads('000000034568797')
+        assert field.value == Decimal('34568.797')
+
+    def test_dumps(self):
+        field = BalanceField(0, value=Decimal('65536.128'))
+        assert field.dumps() == '000000065536128'
+
+    def test_loads_from_dumps(self):
+        field = BalanceField(0, value=Decimal('65536.128'))
+        field.loads(field.dumps())
+        assert field.value == Decimal('65536.128')
+
+    def test_loads_from_dumps_higher_precision(self):
+        field = BalanceField(0, value=Decimal('65536.1024'))
+        field.loads(field.dumps())
+        assert field.value == Decimal('655361.024')
