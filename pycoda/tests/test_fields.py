@@ -333,3 +333,13 @@ class BalanceFieldTest(TestCase):
         field = BalanceField(0, value=Decimal('65536.1024'))
         field.loads(field.dumps())
         assert field.value == Decimal('655361.024')
+
+    def test_regex_not_implemented(self):
+        field = BalanceField(0)
+        with self.assertRaises(NotImplementedError):
+            field._regex()
+
+    def test_parse_not_implemented(self):
+        field = BalanceField(0)
+        with self.assertRaises(NotImplementedError):
+            field._parse('')
