@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 from datetime import date
 from unittest import TestCase
 
-from pycoda.records import InitialRecord, OldBalanceRecord
-
+from pycoda.records import InitialRecord, OldBalanceRecord, TransactionRecord
 
 
 FAIL_PAYMENT_RAW = """0000019091672505        00417969  VIKINGCO NV               KREDBEBB   00886946917 00000                                       2
@@ -128,3 +127,27 @@ class OldBalanceRecordTest(TestCase):
         record = OldBalanceRecord()
         record.loads(SUCCESS_OGM_RAW[129:257])
         assert record.dumps() == SUCCESS_OGM_RAW[129:257]
+
+
+class TransactionRecordTest(TestCase):
+    def setUp(self):
+        self.record = TransactionRecord()
+        self.success_payment_string = SUCCESS_PAYMENT_RAW.splitlines()[2]
+        self.fail_payment_string = FAIL_PAYMENT_RAW.splitlines()[2]
+        self.success_ogm_string = SUCCESS_OGM_RAW.splitlines()[2]
+
+    def test_field_positions_are_consecutive(self):
+        for field, next_field in zip(self.record._fields[:-1], self.record._fields[1:]):
+            assert field.position + field.length == next_field.position
+
+    def test_example_loads_dumps_success_payment(self):
+        self.record.loads(self.success_payment_string)
+        assert self.record.dumps() == self.success_payment_string
+
+    def test_example_loads_dumps_fail_payment(self):
+        self.record.loads(self.fail_payment_string)
+        assert self.record.dumps() == self.fail_payment_string
+
+    def test_example_loads_dumps_success_ogm(self):
+        self.record.loads(self.success_ogm_string)
+        assert self.record.dumps() == self.success_ogm_string
