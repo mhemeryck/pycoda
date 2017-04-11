@@ -157,3 +157,70 @@ class OldBalanceRecord(Record):
 
     def loads(self, string):
         super(OldBalanceRecord, self).loads(string)
+
+
+class TransactionRecord(Record):
+    RECORD_IDENTIFICATION = 2
+    RECORD_ARTICLE = 1
+
+    def __init__(self,
+                 serial_number=None,
+                 detail_number=None,
+                 bank_reference_number=None,
+                 balance_sign= None,
+                 balance=None,
+                 balance_date=None,
+                 transaction_code=None,
+                 reference_type=None,
+                 reference=None,
+                 booking_date=None,
+                 bank_statement_serial_number=None,
+                 globalisation_code=None,
+                 transaction_sequence=None,
+                 information_sequence=None):
+        super(TransactionRecord, self).__init__()
+
+        self._identification_field = NumericField(0, 1, value=TransactionRecord.RECORD_IDENTIFICATION)
+        self._article_field = NumericField(1, 1, value=TransactionRecord.RECORD_ARTICLE)
+        self._serial_number_field = NumericField(2, 4, value=serial_number, pad='0', align='>')
+        self._detail_number_field = NumericField(6, 4, value=detail_number, pad='0', align='>')
+        self._bank_reference_number_field = StringField(10, 21, value=bank_reference_number, tag='61/8')
+        self._balance_sign_field = NumericField(31, 1, value=balance_sign, tag='61/3')
+        self._balance_field = BalanceField(32, value=balance, tag='61/5')
+        self._balance_date_field = DateField(47, 6, value=balance_date, tag='61/1')
+        self._transaction_code_field = NumericField(53, 8, value=transaction_code, tag='61/6')
+        self._reference_type_field = NumericField(61, 1, value=reference_type)
+        self._reference_field = StringField(62, 53, value=reference, tag='61/9')
+        self._booking_date_field = DateField(115, 6, value=booking_date, tag='61/2')
+        self._bank_statement_serial_number_field = NumericField(121, 3, value=bank_statement_serial_number,
+                                                                pad=0, align='>', tag='28/c')
+        self._globalisation_code_field = NumericField(124, 1, value=globalisation_code)
+        self._transaction_sequence_field = NumericField(125, 1, value=transaction_sequence)
+        self._empty_field = EmptyField(126, 1)
+        self._information_sequence_field = NumericField(127, 1, value=information_sequence)
+
+        self._fields = (
+            self._identification_field,
+            self._article_field,
+            self._serial_number_field,
+            self._detail_number_field,
+            self._bank_reference_number_field,
+            self._balance_sign_field,
+            self._balance_field,
+            self._balance_date_field,
+            self._transaction_code_field,
+            self._reference_type_field,
+            self._reference_field,
+            self._booking_date_field,
+            self._bank_statement_serial_number_field,
+            self._globalisation_code_field,
+            self._transaction_sequence_field,
+            self._empty_field,
+            self._information_sequence_field,
+        )
+
+    def dumps(self):
+        return super(TransactionRecord, self).dumps()
+
+    def loads(self, string):
+        super(TransactionRecord, self).loads(string)
