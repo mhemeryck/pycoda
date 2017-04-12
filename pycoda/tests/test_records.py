@@ -4,13 +4,12 @@ from __future__ import unicode_literals
 from datetime import date
 from unittest import TestCase
 
-from pycoda.records import InitialRecord, OldBalanceRecord, TransactionRecord
-
+from pycoda.records import InitialRecord, OldBalanceRecord, TransactionRecord, TransactionPurposeRecord
 
 FAIL_PAYMENT_RAW = """0000019091672505        00417969  VIKINGCO NV               KREDBEBB   00886946917 00000                                       2
 12256BE02737026917240                  EUR0000005020346650150916VIKINGCO NV               KBC-Bedrijfsrekening               119
 2100220000AQQE12627 BHKDGLGTESC0000000000000460140916105500000                                                     14091625611 0
-2200220000                                                     C20160903040112-{collection_file_id}F                                         0 0
+2200220000                                                     C20160903040112-0001F                                         0 0
 2100230105AQPJ06455 SDDBCDBCRFN1000000000022000ddmmyy505500001127ddmmyy310BE02ZZZ0886946917                  M13178ddmmyy25601 0
 22000100270U332767051                  Direct Debit payment CLPCLP1-trtrtrtr                                    2MS03        1 0
 2300230105BEBEBEBEBEBEBEBE                     mvstagingpos20iiiiiiiiiiii Test    1-trtrtrtr                            0    0 1
@@ -21,7 +20,7 @@ FAIL_PAYMENT_RAW = """0000019091672505        00417969  VIKINGCO NV             
 SUCCESS_PAYMENT_RAW = """0000019091672505        00417969  VIKINGCO NV               KREDBEBB   00886946917 00000                                       2
 12256BE02737026917240                  EUR0000005020346650150916VIKINGCO NV               KBC-Bedrijfsrekening               119
 2100220000AQQE12627 BHKDGLGTESC0000000000000460140916105500000                                                     14091625611 0
-2200220000                                                     C20160903040112-{collection_file_id}F                                         0 0
+2200220000                                                     C20160903040112-0001F                                         0 0
 2100230105AQPJ06455 SDDBCDBCRFN0000000000022000ddmmyy505500001127ddmmyy310BE02ZZZ0886946917                  M13178ddmmyy25601 0
 22000100270U332767051                  Direct Debit payment CLPCLP1-trtrtrtr                                                 1 0
 2300230105BEBEBEBEBEBEBEBE                     mvstagingpos20iiiiiiiiiiii Test    1-trtrtrtr                            0    0 1
@@ -32,7 +31,7 @@ SUCCESS_PAYMENT_RAW = """0000019091672505        00417969  VIKINGCO NV          
 SUCCESS_OGM_RAW = """0000019091672505        00417969  VIKINGCO NV               KREDBEBB   00886946917 00000                                       2
 12256BE02737026917240                  EUR0000005020346650150916VIKINGCO NV               KBC-Bedrijfsrekening               119
 2100220000AQQE12627 BHKDGLGTESC0000000000000460140916105500000                                                     14091625611 0
-2200220000                                                     C20160903040112-{collection_file_id}F                                         0 0
+2200220000                                                     C20160903040112-0001F                                         0 0
 2100060000CVYC01435BSCTOBAOVERS0000000000022000ddmmyy001500000+++TTT/TTTT/TTTTT+++                                 ddmmyy26401 0
 2200060000                                                                                        KREDBEBB                   1 0
 2300060000BE10734024724804                     PEETERS ALEXIA                                                                0 1
@@ -135,6 +134,30 @@ class TransactionRecordTest(TestCase):
         self.success_payment_string = SUCCESS_PAYMENT_RAW.splitlines()[2]
         self.fail_payment_string = FAIL_PAYMENT_RAW.splitlines()[2]
         self.success_ogm_string = SUCCESS_OGM_RAW.splitlines()[2]
+
+    def test_field_positions_are_consecutive(self):
+        for field, next_field in zip(self.record._fields[:-1], self.record._fields[1:]):
+            assert field.position + field.length == next_field.position
+
+    def test_example_loads_dumps_success_payment(self):
+        self.record.loads(self.success_payment_string)
+        assert self.record.dumps() == self.success_payment_string
+
+    def test_example_loads_dumps_fail_payment(self):
+        self.record.loads(self.fail_payment_string)
+        assert self.record.dumps() == self.fail_payment_string
+
+    def test_example_loads_dumps_success_ogm(self):
+        self.record.loads(self.success_ogm_string)
+        assert self.record.dumps() == self.success_ogm_string
+
+
+class TransactionPurposeRecordTest(TestCase):
+    def setUp(self):
+        self.record = TransactionPurposeRecord()
+        self.success_payment_string = SUCCESS_PAYMENT_RAW.splitlines()[3]
+        self.fail_payment_string = FAIL_PAYMENT_RAW.splitlines()[3]
+        self.success_ogm_string = SUCCESS_OGM_RAW.splitlines()[3]
 
     def test_field_positions_are_consecutive(self):
         for field, next_field in zip(self.record._fields[:-1], self.record._fields[1:]):
