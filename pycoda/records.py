@@ -321,3 +321,53 @@ class TransactionDetailRecord(Record):
 
         def loads(self, string):
             super(TransactionDetailRecord, self).loads(string)
+
+
+class InformationRecord(Record):
+    RECORD_IDENTIFICATION = 3
+    RECORD_ARTICLE = 1
+
+    def __init__(self,
+                 serial_number=None,
+                 detail_number=None,
+                 reference_number=None,
+                 transaction_code=None,
+                 reference_type=None,
+                 reference=None,
+                 transaction_sequence=None,
+                 information_sequence=None):
+        super(InformationRecord, self).__init__()
+
+        self._identification_field = NumericField(0, 1, value=TransactionDetailRecord.RECORD_IDENTIFICATION)
+        self._article_field = NumericField(1, 1, value=TransactionDetailRecord.RECORD_ARTICLE)
+        self._serial_number_field = NumericField(2, 4, value=serial_number, pad='0', align='>')
+        self._detail_number_field = NumericField(6, 4, value=detail_number, pad='0', align='>')
+        self._reference_number_field = StringField(10, 21, value=reference_number, tag='61/8')
+        self._transaction_code_field = NumericField(31, 8, value=transaction_code, pad='0', align='>', tag='61/6')
+        self._reference_type_field = NumericField(39, 1, value=reference_type)
+        self._reference_field = StringField(40, 73, value=reference, tag='86')
+        self._empty_field0 = EmptyField(113, 12)
+        self._transaction_sequence_field = NumericField(125, 1, value=transaction_sequence)
+        self._empty_field1 = EmptyField(126, 1)
+        self._information_sequence_field = NumericField(127, 1, value=information_sequence)
+
+        self._fields = (
+            self._identification_field,
+            self._article_field,
+            self._serial_number_field,
+            self._detail_number_field,
+            self._reference_number_field,
+            self._transaction_code_field,
+            self._reference_type_field,
+            self._reference_field,
+            self._empty_field0,
+            self._transaction_sequence_field,
+            self._empty_field1,
+            self._information_sequence_field
+        )
+
+        def dumps(self):
+            return super(InformationRecord, self).dumps()
+
+        def loads(self, string):
+            super(InformationRecord, self).loads(string)
