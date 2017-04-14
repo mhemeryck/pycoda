@@ -104,7 +104,9 @@ class NumericField(StringField):
 
     def _regex(self):
         length = self.length - len(self.head) - len(self.tail)
-        return r'^({self.head})?(?P<value>[\d\s]{{{length}}})({self.tail})?$'.format(self=self, length=length)
+        return (r'^({self.head})?'
+                r'(?P<value>[\d\s]{{{length}}})'
+                r'({self.tail})?$').format(self=self, length=length)
 
     def _parse(self, string):
         return super(NumericField, self)._parse(string)
@@ -112,9 +114,15 @@ class NumericField(StringField):
     def dumps(self):
         value = self.value if self.value else 0
         length = self.length - len(self.head) - len(self.tail)
-        dump_format = '{value:{self.pad}{self.align}{length}d}'
-        value_string = dump_format.format(self=self, value=value, length=length)[:length]
-        return '{self.head}{value_string}{self.tail}'.format(self=self, value_string=value_string)
+        value_string = ('{value:'
+                        '{self.pad}'
+                        '{self.align}'
+                        '{length}'
+                        'd}').format(self=self, value=value, length=length)
+        truncated = value_string[:length]
+        return ('{self.head}'
+                '{truncated}'
+                '{self.tail}').format(self=self, truncated=truncated)
 
     def loads(self, string):
         self.value = int(self._parse(string))
@@ -162,9 +170,12 @@ class BalanceField(Field):
     def dumps(self):
         value_tuple = self.value.as_tuple()
         shifted = Decimal((value_tuple.sign, value_tuple.digits, 0))
-        return '{shifted:{self.pad}{self.LENGTH}f}'.format(self=self, shifted=shifted)
+        dump_format = '{shifted:{self.pad}{self.LENGTH}f}'
+        return dump_format.format(self=self, shifted=shifted)
 
     def loads(self, string):
         parsed = Decimal(string)
         parsed_tuple = parsed.as_tuple()
-        self.value = Decimal((parsed_tuple.sign, parsed_tuple.digits, -BalanceField.DECIMAL_PLACES))
+        self.value = Decimal((parsed_tuple.sign,
+                              parsed_tuple.digits,
+                              -BalanceField.DECIMAL_PLACES))
