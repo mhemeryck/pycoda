@@ -4,7 +4,9 @@ from __future__ import unicode_literals
 from datetime import date
 from unittest import TestCase
 
-from pycoda.records import InitialRecord, OldBalanceRecord, TransactionRecord, TransactionPurposeRecord
+from pycoda.records import (InitialRecord, OldBalanceRecord, TransactionRecord, TransactionPurposeRecord,
+                            TransactionDetailRecord)
+
 
 FAIL_PAYMENT_RAW = """0000019091672505        00417969  VIKINGCO NV               KREDBEBB   00886946917 00000                                       2
 12256BE02737026917240                  EUR0000005020346650150916VIKINGCO NV               KBC-Bedrijfsrekening               119
@@ -158,6 +160,30 @@ class TransactionPurposeRecordTest(TestCase):
         self.success_payment_string = SUCCESS_PAYMENT_RAW.splitlines()[3]
         self.fail_payment_string = FAIL_PAYMENT_RAW.splitlines()[3]
         self.success_ogm_string = SUCCESS_OGM_RAW.splitlines()[3]
+
+    def test_field_positions_are_consecutive(self):
+        for field, next_field in zip(self.record._fields[:-1], self.record._fields[1:]):
+            assert field.position + field.length == next_field.position
+
+    def test_example_loads_dumps_success_payment(self):
+        self.record.loads(self.success_payment_string)
+        assert self.record.dumps() == self.success_payment_string
+
+    def test_example_loads_dumps_fail_payment(self):
+        self.record.loads(self.fail_payment_string)
+        assert self.record.dumps() == self.fail_payment_string
+
+    def test_example_loads_dumps_success_ogm(self):
+        self.record.loads(self.success_ogm_string)
+        assert self.record.dumps() == self.success_ogm_string
+
+
+class TransactionDetailRecordTest(TestCase):
+    def setUp(self):
+        self.record = TransactionDetailRecord()
+        self.success_payment_string = SUCCESS_PAYMENT_RAW.splitlines()[6]
+        self.fail_payment_string = FAIL_PAYMENT_RAW.splitlines()[6]
+        self.success_ogm_string = SUCCESS_OGM_RAW.splitlines()[6]
 
     def test_field_positions_are_consecutive(self):
         for field, next_field in zip(self.record._fields[:-1], self.record._fields[1:]):
