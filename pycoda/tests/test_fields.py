@@ -2,11 +2,11 @@
 from __future__ import unicode_literals
 
 from datetime import date
+from decimal import Decimal
 from unittest import TestCase
 
-from decimal import Decimal
-
-from pycoda.fields import (NumericField, StringField, ZeroesField, DateField, EmptyField, BalanceField)
+from pycoda.fields import (NumericField, StringField, ZeroesField, DateField,
+                           EmptyField, BalanceField)
 
 
 class StringFieldTest(TestCase):
@@ -96,7 +96,7 @@ class StringFieldTest(TestCase):
         field = StringField(0, 1, value=' ')
         assert field.dumps() == ' '
 
-    def test_dumps_empty_value(   self):
+    def test_dumps_empty_value(self):
         field = StringField(0, 3)
         assert field.dumps() == '   '
 
@@ -105,7 +105,7 @@ class StringFieldTest(TestCase):
         assert field.dumps() == ' foo'
 
     def test_dumps_trailing_space(self):
-        field = StringField(0, 4, value= 'foo ')
+        field = StringField(0, 4, value='foo ')
         assert field.dumps() == 'foo '
 
     def test_dumps_init_none_value(self):
