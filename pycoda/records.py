@@ -277,3 +277,47 @@ class TransactionPurposeRecord(Record):
 
     def loads(self, string):
         super(TransactionPurposeRecord, self).loads(string)
+
+
+class TransactionDetailRecord(Record):
+    RECORD_IDENTIFICATION = 2
+    RECORD_ARTICLE = 3
+
+    def __init__(self,
+                 serial_number=None,
+                 detail_number=None,
+                 account_number=None,
+                 account_holder_name=None,
+                 description=None,
+                 information_sequence=None):
+        super(TransactionDetailRecord, self).__init__()
+
+        self._identification_field = NumericField(0, 1, value=TransactionDetailRecord.RECORD_IDENTIFICATION)
+        self._article_field = NumericField(1, 1, value=TransactionDetailRecord.RECORD_ARTICLE)
+        self._serial_number_field = NumericField(2, 4, value=serial_number, pad='0', align='>')
+        self._detail_number_field = NumericField(6, 4, value=detail_number, pad='0', align='>')
+        self._account_number_field = StringField(10, 37, value=account_number)
+        self._account_holder_name_field = StringField(47, 35, value=account_holder_name)
+        self._description_field = StringField(82, 43, value=description)
+        self._sequence_code_field = ZeroesField(125, 1)
+        self._empty_field = EmptyField(126, 1)
+        self._information_sequence_field = NumericField(127, 1, value=information_sequence)
+
+        self._fields = (
+            self._identification_field,
+            self._article_field,
+            self._serial_number_field,
+            self._detail_number_field,
+            self._account_number_field,
+            self._account_holder_name_field,
+            self._description_field,
+            self._sequence_code_field,
+            self._empty_field,
+            self._information_sequence_field,
+        )
+
+        def dumps(self):
+            return super(TransactionDetailRecord, self).dumps()
+
+        def loads(self, string):
+            super(TransactionDetailRecord, self).loads(string)
