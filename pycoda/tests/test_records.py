@@ -6,7 +6,7 @@ from unittest import TestCase
 
 from pycoda.records import (InitialRecord, OldBalanceRecord, TransactionRecord,
                             TransactionPurposeRecord, TransactionDetailRecord,
-                            InformationRecord)
+                            InformationRecord, InformationPurposeRecord)
 
 
 class InitialRecordTest(TestCase):
@@ -153,3 +153,13 @@ class InformationRecordTest(TestCase):
     def test_example_loads_dumps_success_payment(self):
         self.record.loads(self.RAW)
         assert self.record.dumps() == self.RAW
+
+
+class InformationPurposeRecordTest(TestCase):
+    def setUp(self):
+        self.record = InformationPurposeRecord()
+
+    def test_field_positions_are_consecutive(self):
+        field_iterator = zip(self.record._fields[:-1], self.record._fields[1:])
+        for field, next_field in field_iterator:
+            assert field.position + field.length == next_field.position
