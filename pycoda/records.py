@@ -594,3 +594,35 @@ class ExtraMessageRecord(Record):
 
     def loads(self, string):
         super(ExtraMessageRecord, self).loads(string)
+
+
+class FinalRecord(Record):
+    RECORD_IDENTIFICATION = 9
+
+    def __init__(self):
+        super(FinalRecord, self).__init__()
+
+        self._identification_field = NumericField(
+            0, 1, FinalRecord.RECORD_IDENTIFICATION)
+        self._empty_field0 = EmptyField(1, 15)
+        self._number_records_field = NumericField(16, 6, pad='0', align='>')
+        self._debit_field = BalanceField(22)
+        self._credit_field = BalanceField(37)
+        self._empty_field1 = EmptyField(52, 75)
+        self._sequence_field = NumericField(127, 1)
+
+        self._fields = (
+            self._identification_field,
+            self._empty_field0,
+            self._number_records_field,
+            self._debit_field,
+            self._credit_field,
+            self._empty_field1,
+            self._sequence_field,
+        )
+
+        def dumps(self):
+            return super(FinalRecord, self).dumps()
+
+        def loads(self, string):
+            super(FinalRecord, self).loads(string)

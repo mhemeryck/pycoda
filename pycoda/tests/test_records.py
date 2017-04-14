@@ -8,7 +8,7 @@ from pycoda.records import (InitialRecord, OldBalanceRecord, TransactionRecord,
                             TransactionPurposeRecord, TransactionDetailRecord,
                             InformationRecord, InformationPurposeRecord,
                             InformationDetailRecord, NewBalanceRecord,
-                            ExtraMessageRecord)
+                            ExtraMessageRecord, FinalRecord)
 
 
 class InitialRecordTest(TestCase):
@@ -202,3 +202,20 @@ class ExtraMessageRecordTest(TestCase):
         field_iterator = zip(self.record._fields[:-1], self.record._fields[1:])
         for field, next_field in field_iterator:
             assert field.position + field.length == next_field.position
+
+
+class FinalRecordTest(TestCase):
+    RAW = ('9               027972000000000322000000000142995170            '
+           '                                                               2')
+
+    def setUp(self):
+        self.record = FinalRecord()
+
+    def test_field_positions_are_consecutive(self):
+        field_iterator = zip(self.record._fields[:-1], self.record._fields[1:])
+        for field, next_field in field_iterator:
+            assert field.position + field.length == next_field.position
+
+    def test_example_loads_dumps_raw_record(self):
+        self.record.loads(self.RAW)
+        assert self.record.dumps() == self.RAW
