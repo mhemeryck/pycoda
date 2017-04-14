@@ -118,7 +118,7 @@ class TransactionPurposeRecordTest(TestCase):
         for field, next_field in field_iterator:
             assert field.position + field.length == next_field.position
 
-    def test_example_loads_dumps_success_payment(self):
+    def test_example_loads_dumps_raw_record(self):
         self.record.loads(self.RAW)
         assert self.record.dumps() == self.RAW
 
@@ -135,7 +135,7 @@ class TransactionDetailRecordTest(TestCase):
         for field, next_field in field_iterator:
             assert field.position + field.length == next_field.position
 
-    def test_example_loads_dumps_success_payment(self):
+    def test_example_loads_dumps_raw_record(self):
         self.record.loads(self.RAW)
         assert self.record.dumps() == self.RAW
 
@@ -152,7 +152,7 @@ class InformationRecordTest(TestCase):
         for field, next_field in field_iterator:
             assert field.position + field.length == next_field.position
 
-    def test_example_loads_dumps_success_payment(self):
+    def test_example_loads_dumps_raw_record(self):
         self.record.loads(self.RAW)
         assert self.record.dumps() == self.RAW
 
@@ -189,7 +189,7 @@ class NewBalanceRecordTest(TestCase):
         for field, next_field in field_iterator:
             assert field.position + field.length == next_field.position
 
-    def test_example_loads_dumps_success_payment(self):
+    def test_example_loads_dumps_raw_record(self):
         self.record.loads(self.RAW)
         assert self.record.dumps() == self.RAW
 
