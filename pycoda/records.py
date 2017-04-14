@@ -469,3 +469,49 @@ class InformationPurposeRecord(Record):
 
     def loads(self, string):
         super(InformationPurposeRecord, self).loads(string)
+
+
+class InformationDetailRecord(Record):
+    RECORD_IDENTIFICATION = 3
+    RECORD_ARTICLE = 3
+
+    def __init__(self,
+                 serial_number=None,
+                 detail_number=None,
+                 bank_reference_number=None,
+                 information_sequence=None):
+        super(InformationDetailRecord, self).__init__()
+
+        self._identification_field = NumericField(
+            0, 1, value=InformationPurposeRecord.RECORD_IDENTIFICATION)
+        self._article_field = NumericField(
+            1, 1, value=InformationPurposeRecord.RECORD_ARTICLE)
+        self._serial_number_field = NumericField(
+            2, 4, value=serial_number, pad='0', align='>')
+        self._detail_number_field = NumericField(
+            6, 4, value=detail_number, pad='0', align='>')
+        self._bank_reference_number_field = StringField(
+            10, 90, value=bank_reference_number)
+        self._empty_field0 = EmptyField(100, 25)
+        self._sequence_code_field = ZeroesField(125, 1)
+        self._empty_field1 = EmptyField(126, 1)
+        self._information_sequence_field = NumericField(
+            127, 1, value=information_sequence)
+
+        self._fields = (
+            self._identification_field,
+            self._article_field,
+            self._serial_number_field,
+            self._detail_number_field,
+            self._bank_reference_number_field,
+            self._empty_field0,
+            self._sequence_code_field,
+            self._empty_field1,
+            self._information_sequence_field,
+        )
+
+        def dumps(self):
+            return super(InformationDetailRecord, self).dumps()
+
+        def loads(self, string):
+            super(InformationDetailRecord, self).loads(string)
