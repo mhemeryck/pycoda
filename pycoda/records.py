@@ -560,3 +560,37 @@ class NewBalanceRecord(Record):
 
     def loads(self, string):
         super(NewBalanceRecord, self).loads(string)
+
+
+class ExtraMessageRecord(Record):
+    RECORD_IDENTIFICATION = 4
+
+    def __init__(self):
+        super(ExtraMessageRecord, self).__init__()
+
+        self._identification_field = NumericField(
+            0, 1, value=ExtraMessageRecord.RECORD_IDENTIFICATION)
+        self._empty_field0 = EmptyField(1, 1)
+        self._serial_number_field = NumericField(2, 4, pad='0', align='>')
+        self._detail_number_field = NumericField(6, 4, pad='0', align='>')
+        self._empty_field1 = EmptyField(10, 22)
+        self._extra_message_field = StringField(32, 80)
+        self._empty_field2 = EmptyField(112, 15)
+        self._sequence_field = NumericField(127, 1)
+
+        self._fields = (
+            self._identification_field,
+            self._empty_field0,
+            self._serial_number_field,
+            self._detail_number_field,
+            self._empty_field1,
+            self._extra_message_field,
+            self._empty_field2,
+            self._sequence_field,
+        )
+
+    def dumps(self):
+        return super(ExtraMessageRecord, self).dumps()
+
+    def loads(self, string):
+        super(ExtraMessageRecord, self).loads(string)
