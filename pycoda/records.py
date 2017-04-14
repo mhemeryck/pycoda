@@ -515,3 +515,48 @@ class InformationDetailRecord(Record):
 
         def loads(self, string):
             super(InformationDetailRecord, self).loads(string)
+
+
+class NewBalanceRecord(Record):
+    RECORD_IDENTIFICATION = 8
+
+    def __init__(self,
+                 serial_number=None,
+                 account_number=None,
+                 balance_sign=None,
+                 new_balance=None,
+                 balance_date=None,
+                 sequence=None):
+        super(NewBalanceRecord, self).__init__()
+
+        self._identification_field = NumericField(
+            0, 1, value=NewBalanceRecord.RECORD_IDENTIFICATION)
+        self._serial_number_field = NumericField(
+            1, 3, value=serial_number, tag='28c/1')
+        self._account_number_field = StringField(
+            4, 37, value=account_number)
+        self._balance_sign_field = NumericField(
+            41, 1, value=balance_sign, tag='62F/1')
+        self._new_balance_field = BalanceField(
+            42, value=new_balance, tag='62F/4')
+        self._balance_date_field = DateField(
+            57, 6, value=balance_date, tag='62F/2')
+        self._empty_field = EmptyField(63, 64)
+        self._sequence_field = NumericField(127, 1, value=sequence)
+
+        self._fields = (
+            self._identification_field,
+            self._serial_number_field,
+            self._account_number_field,
+            self._balance_sign_field,
+            self._new_balance_field,
+            self._balance_date_field,
+            self._empty_field,
+            self._sequence_field,
+        )
+
+    def dumps(self):
+        return super(NewBalanceRecord, self).dumps()
+
+    def loads(self, string):
+        super(NewBalanceRecord, self).loads(string)
