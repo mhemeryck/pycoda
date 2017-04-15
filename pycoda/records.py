@@ -5,7 +5,20 @@ from pycoda.fields import (NumericField, StringField, ZeroesField, DateField,
                            EmptyField, BalanceField)
 
 
+class RecordIdentification(object):
+    INITIAL = 0
+    OLD_BALANCE = 1
+    TRANSACTION = 2
+    INFORMATION = 3
+    EXTRA_MESSAGE = 4
+    NEW_BALANCE = 8
+    FINAL = 9
+
+
 class Record(object):
+    IDENTIFICATION = None
+    ARTICLE = None
+
     def __init__(self):
         self._fields = ()
 
@@ -18,7 +31,8 @@ class Record(object):
 
 
 class InitialRecord(Record):
-    RECORD_IDENTIFICATION = 0
+    IDENTIFICATION = RecordIdentification.INITIAL
+    ARTICLE = None
     APPLICATION_CODE = '05'
     VERSION_CODE = 2
 
@@ -36,7 +50,7 @@ class InitialRecord(Record):
         super(Record, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=InitialRecord.RECORD_IDENTIFICATION)
+            0, 1, value=InitialRecord.IDENTIFICATION)
         self._zeroes_field = ZeroesField(1, 4)
         self._creation_date_field = DateField(5, 6, value=creation_date)
         self._bank_identification_number_field = NumericField(
@@ -119,7 +133,8 @@ class InitialRecord(Record):
 
 
 class OldBalanceRecord(Record):
-    RECORD_IDENTIFICATION = 1
+    IDENTIFICATION = RecordIdentification.OLD_BALANCE
+    ARTICLE = None
 
     def __init__(self,
                  account_structure=None,
@@ -134,7 +149,7 @@ class OldBalanceRecord(Record):
         super(OldBalanceRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=OldBalanceRecord.RECORD_IDENTIFICATION)
+            0, 1, value=OldBalanceRecord.IDENTIFICATION)
         self._account_structure_field = NumericField(
             1, 1, value=account_structure)
         self._serial_number_field = NumericField(
@@ -174,8 +189,8 @@ class OldBalanceRecord(Record):
 
 
 class TransactionRecord(Record):
-    RECORD_IDENTIFICATION = 2
-    RECORD_ARTICLE = 1
+    IDENTIFICATION = RecordIdentification.TRANSACTION
+    ARTICLE = 1
 
     def __init__(self,
                  serial_number=None,
@@ -195,9 +210,9 @@ class TransactionRecord(Record):
         super(TransactionRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=TransactionRecord.RECORD_IDENTIFICATION)
+            0, 1, value=TransactionPurposeRecord.IDENTIFICATION)
         self._article_field = NumericField(
-            1, 1, value=TransactionRecord.RECORD_ARTICLE)
+            1, 1, value=TransactionRecord.ARTICLE)
         self._serial_number_field = NumericField(
             2, 4, value=serial_number, pad='0', align='>')
         self._detail_number_field = NumericField(
@@ -255,8 +270,8 @@ class TransactionRecord(Record):
 
 
 class TransactionPurposeRecord(Record):
-    RECORD_IDENTIFICATION = 2
-    RECORD_ARTICLE = 2
+    IDENTIFICATION = RecordIdentification.TRANSACTION
+    ARTICLE = 2
 
     def __init__(self,
                  serial_number=None,
@@ -271,9 +286,9 @@ class TransactionPurposeRecord(Record):
         super(Record, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=TransactionPurposeRecord.RECORD_IDENTIFICATION)
+            0, 1, value=TransactionPurposeRecord.IDENTIFICATION)
         self._article_field = NumericField(
-            1, 1, value=TransactionPurposeRecord.RECORD_ARTICLE)
+            1, 1, value=TransactionPurposeRecord.ARTICLE)
         self._serial_number_field = NumericField(
             2, 4, value=serial_number, pad='0', align='>')
         self._detail_number_field = NumericField(
@@ -316,8 +331,8 @@ class TransactionPurposeRecord(Record):
 
 
 class TransactionDetailRecord(Record):
-    RECORD_IDENTIFICATION = 2
-    RECORD_ARTICLE = 3
+    IDENTIFICATION = RecordIdentification.TRANSACTION
+    ARTICLE = 3
 
     def __init__(self,
                  serial_number=None,
@@ -329,9 +344,9 @@ class TransactionDetailRecord(Record):
         super(TransactionDetailRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=TransactionDetailRecord.RECORD_IDENTIFICATION)
+            0, 1, value=TransactionDetailRecord.IDENTIFICATION)
         self._article_field = NumericField(
-            1, 1, value=TransactionDetailRecord.RECORD_ARTICLE)
+            1, 1, value=TransactionDetailRecord.ARTICLE)
         self._serial_number_field = NumericField(
             2, 4, value=serial_number, pad='0', align='>')
         self._detail_number_field = NumericField(
@@ -366,8 +381,8 @@ class TransactionDetailRecord(Record):
 
 
 class InformationRecord(Record):
-    RECORD_IDENTIFICATION = 3
-    RECORD_ARTICLE = 1
+    IDENTIFICATION = RecordIdentification.INFORMATION
+    ARTICLE = 1
 
     def __init__(self,
                  serial_number=None,
@@ -381,9 +396,9 @@ class InformationRecord(Record):
         super(InformationRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=TransactionDetailRecord.RECORD_IDENTIFICATION)
+            0, 1, value=TransactionDetailRecord.IDENTIFICATION)
         self._article_field = NumericField(
-            1, 1, value=TransactionDetailRecord.RECORD_ARTICLE)
+            1, 1, value=TransactionDetailRecord.ARTICLE)
         self._serial_number_field = NumericField(
             2, 4, value=serial_number, pad='0', align='>')
         self._detail_number_field = NumericField(
@@ -424,8 +439,8 @@ class InformationRecord(Record):
 
 
 class InformationPurposeRecord(Record):
-    RECORD_IDENTIFICATION = 3
-    RECORD_ARTICLE = 2
+    IDENTIFICATION = RecordIdentification.INFORMATION
+    ARTICLE = 2
 
     def __init__(self,
                  serial_number=None,
@@ -436,9 +451,9 @@ class InformationPurposeRecord(Record):
         super(InformationPurposeRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=InformationPurposeRecord.RECORD_IDENTIFICATION)
+            0, 1, value=InformationPurposeRecord.IDENTIFICATION)
         self._article_field = NumericField(
-            1, 1, value=InformationPurposeRecord.RECORD_ARTICLE)
+            1, 1, value=InformationPurposeRecord.ARTICLE)
         self._serial_number_field = NumericField(
             2, 4, value=serial_number, pad='0', align='>')
         self._detail_number_field = NumericField(
@@ -472,8 +487,8 @@ class InformationPurposeRecord(Record):
 
 
 class InformationDetailRecord(Record):
-    RECORD_IDENTIFICATION = 3
-    RECORD_ARTICLE = 3
+    IDENTIFICATION = RecordIdentification.INFORMATION
+    ARTICLE = 3
 
     def __init__(self,
                  serial_number=None,
@@ -483,9 +498,9 @@ class InformationDetailRecord(Record):
         super(InformationDetailRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=InformationPurposeRecord.RECORD_IDENTIFICATION)
+            0, 1, value=InformationPurposeRecord.IDENTIFICATION)
         self._article_field = NumericField(
-            1, 1, value=InformationPurposeRecord.RECORD_ARTICLE)
+            1, 1, value=InformationPurposeRecord.ARTICLE)
         self._serial_number_field = NumericField(
             2, 4, value=serial_number, pad='0', align='>')
         self._detail_number_field = NumericField(
@@ -518,7 +533,7 @@ class InformationDetailRecord(Record):
 
 
 class NewBalanceRecord(Record):
-    RECORD_IDENTIFICATION = 8
+    IDENTIFICATION = RecordIdentification.NEW_BALANCE
 
     def __init__(self,
                  serial_number=None,
@@ -530,7 +545,7 @@ class NewBalanceRecord(Record):
         super(NewBalanceRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=NewBalanceRecord.RECORD_IDENTIFICATION)
+            0, 1, value=NewBalanceRecord.IDENTIFICATION)
         self._serial_number_field = NumericField(
             1, 3, value=serial_number, tag='28c/1')
         self._account_number_field = StringField(
@@ -563,13 +578,13 @@ class NewBalanceRecord(Record):
 
 
 class ExtraMessageRecord(Record):
-    RECORD_IDENTIFICATION = 4
+    IDENTIFICATION = RecordIdentification.EXTRA_MESSAGE
 
     def __init__(self):
         super(ExtraMessageRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=ExtraMessageRecord.RECORD_IDENTIFICATION)
+            0, 1, value=ExtraMessageRecord.IDENTIFICATION)
         self._empty_field0 = EmptyField(1, 1)
         self._serial_number_field = NumericField(2, 4, pad='0', align='>')
         self._detail_number_field = NumericField(6, 4, pad='0', align='>')
@@ -597,13 +612,13 @@ class ExtraMessageRecord(Record):
 
 
 class FinalRecord(Record):
-    RECORD_IDENTIFICATION = 9
+    IDENTIFICATION = RecordIdentification.FINAL
 
     def __init__(self):
         super(FinalRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, FinalRecord.RECORD_IDENTIFICATION)
+            0, 1, FinalRecord.IDENTIFICATION)
         self._empty_field0 = EmptyField(1, 15)
         self._number_records_field = NumericField(16, 6, pad='0', align='>')
         self._debit_field = BalanceField(22)
