@@ -210,7 +210,7 @@ class TransactionRecord(Record):
         self._balance_date_field = DateField(
             47, 6, value=balance_date, tag='61/1')
         self._transaction_code_field = NumericField(
-            53, 8, value=transaction_code, tag='61/6')
+            53, 8, value=transaction_code, pad='0', align='>', tag='61/6')
         self._reference_type_field = NumericField(61, 1, value=reference_type)
         self._reference_field = StringField(
             62, 53, value=reference, tag='61/9')

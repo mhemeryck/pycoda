@@ -151,6 +151,36 @@ class StringFieldTest(TestCase):
         field.loads('some-string   ')
         assert field.value == 'some-string   '
 
+    def test_loads_from_dumps_ampersand(self):
+        field = StringField(0, 11)
+        field.loads('drum & bass')
+        assert field.value == 'drum & bass'
+
+    def test_loads_from_dumps_dot(self):
+        field = StringField(0, 7)
+        field.loads('web 2.0')
+        assert field.value == 'web 2.0'
+
+    def test_loads_from_dumps_forward_slash(self):
+        field = StringField(0, 5)
+        field.loads('A / B')
+        assert field.value == 'A / B'
+
+    def test_loads_from_dumps_forward_braces(self):
+        field = StringField(0, 13)
+        field.loads('(hello world)')
+        assert field.value == '(hello world)'
+
+    def test_loads_from_dumps_forward_accent(self):
+        field = StringField(0, 7)
+        field.loads("d'hondt")
+        assert field.value == "d'hondt"
+
+    def test_loads_from_dumps_forward_comma(self):
+        field = StringField(0, 12)
+        field.loads('ebony, ivory')
+        assert field.value == 'ebony, ivory'
+
 
 class EmptyFieldTest(TestCase):
     def test_loads(self):

@@ -45,7 +45,8 @@ class StringField(Field):
         self.align = align
 
     def _regex(self):
-        return r'^(?P<value>[\w\s\-]{{{self.length}}})$'.format(self=self)
+        return (r'^(?P<value>[\w\s\-\&\.\/\(\)\'\,]'
+                r'{{{self.length}}})$').format(self=self)
 
     def _parse(self, string):
         return super(StringField, self)._parse(string)
