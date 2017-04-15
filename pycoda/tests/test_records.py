@@ -90,8 +90,8 @@ class OldBalanceRecordTest(TestCase):
 
 
 class TransactionRecordTest(TestCase):
-    RAW = ('2100220000AQQE12627 BHKDGLGTESC0000000000000460140916105500000  '
-           '                                                   14091625611 0')
+    RAW = ('2100010000OL1002OFFASCTOVSOVERS000000000001000018081600150000110'
+           '1048573874287                                      18081623001 0')
 
     def setUp(self):
         self.record = TransactionRecord()
