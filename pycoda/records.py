@@ -15,6 +15,12 @@ class RecordIdentification(object):
     FINAL = 9
 
 
+class RecordArticle:
+    DEFAULT = 1
+    PURPOSE = 2
+    DETAIL = 3
+
+
 class Record(object):
     IDENTIFICATION = None
     ARTICLE = None
@@ -190,7 +196,7 @@ class OldBalanceRecord(Record):
 
 class TransactionRecord(Record):
     IDENTIFICATION = RecordIdentification.TRANSACTION
-    ARTICLE = 1
+    ARTICLE = RecordArticle.DEFAULT
 
     def __init__(self,
                  serial_number=None,
@@ -271,7 +277,7 @@ class TransactionRecord(Record):
 
 class TransactionPurposeRecord(Record):
     IDENTIFICATION = RecordIdentification.TRANSACTION
-    ARTICLE = 2
+    ARTICLE = RecordArticle.PURPOSE
 
     def __init__(self,
                  serial_number=None,
@@ -332,7 +338,7 @@ class TransactionPurposeRecord(Record):
 
 class TransactionDetailRecord(Record):
     IDENTIFICATION = RecordIdentification.TRANSACTION
-    ARTICLE = 3
+    ARTICLE = RecordArticle.DETAIL
 
     def __init__(self,
                  serial_number=None,
@@ -382,7 +388,7 @@ class TransactionDetailRecord(Record):
 
 class InformationRecord(Record):
     IDENTIFICATION = RecordIdentification.INFORMATION
-    ARTICLE = 1
+    ARTICLE = RecordArticle.DEFAULT
 
     def __init__(self,
                  serial_number=None,
@@ -440,7 +446,7 @@ class InformationRecord(Record):
 
 class InformationPurposeRecord(Record):
     IDENTIFICATION = RecordIdentification.INFORMATION
-    ARTICLE = 2
+    ARTICLE = RecordArticle.PURPOSE
 
     def __init__(self,
                  serial_number=None,
@@ -488,7 +494,7 @@ class InformationPurposeRecord(Record):
 
 class InformationDetailRecord(Record):
     IDENTIFICATION = RecordIdentification.INFORMATION
-    ARTICLE = 3
+    ARTICLE = RecordArticle.DETAIL
 
     def __init__(self,
                  serial_number=None,
@@ -534,6 +540,7 @@ class InformationDetailRecord(Record):
 
 class NewBalanceRecord(Record):
     IDENTIFICATION = RecordIdentification.NEW_BALANCE
+    ARTICLE = None
 
     def __init__(self,
                  serial_number=None,
@@ -579,6 +586,7 @@ class NewBalanceRecord(Record):
 
 class ExtraMessageRecord(Record):
     IDENTIFICATION = RecordIdentification.EXTRA_MESSAGE
+    ARTICLE = None
 
     def __init__(self):
         super(ExtraMessageRecord, self).__init__()
@@ -613,6 +621,7 @@ class ExtraMessageRecord(Record):
 
 class FinalRecord(Record):
     IDENTIFICATION = RecordIdentification.FINAL
+    ARTICLE = None
 
     def __init__(self):
         super(FinalRecord, self).__init__()
