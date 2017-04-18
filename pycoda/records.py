@@ -45,7 +45,7 @@ class InitialRecord(Record):
     def __init__(self,
                  creation_date=None,
                  bank_identification_number=None,
-                 duplicate_code=None,
+                 is_duplicate=None,
                  reference=None,
                  addressee=None,
                  bic=None,
@@ -60,10 +60,11 @@ class InitialRecord(Record):
         self._zeroes_field = ZeroesField(1, 4)
         self._creation_date_field = DateField(5, 6, value=creation_date)
         self._bank_identification_number_field = NumericField(
-            11, 3, value=bank_identification_number, pad=0)
+            11, 3, value=bank_identification_number, pad=0, align='>')
         self._application_code_field = StringField(
             14, 2, value=InitialRecord.APPLICATION_CODE)
-        self._duplicate_field = StringField(16, 1, value=duplicate_code)
+        self._duplicate_field = StringField(
+            16, 1, value='D' if is_duplicate else ' ')
         self._empty_field0 = EmptyField(17, 7)
         self._reference_field = StringField(24, 10, value=reference)
         self._addressee_field = StringField(34, 26, value=addressee)
@@ -107,35 +108,85 @@ class InitialRecord(Record):
     def loads(self, string):
         super(InitialRecord, self).loads(string)
 
+    @property
     def creation_date(self):
         return self._creation_date_field.value
 
+    @creation_date.setter
+    def creation_date(self, creation_date):
+        self._creation_date_field.value = creation_date
+
+    @property
     def bank_identification_number(self):
         return self._bank_identification_number_field.value
 
+    @bank_identification_number.setter
+    def bank_identification_number(self, number):
+        self._bank_identification_number_field.value = number
+
+    @property
     def is_duplicate(self):
         return self._duplicate_field.value == 'D'
 
+    @is_duplicate.setter
+    def is_duplicate(self, is_duplicate):
+        self._duplicate_field.value = 'D' if is_duplicate else ' '
+
+    @property
     def reference(self):
         return self._reference_field.value
 
+    @reference.setter
+    def reference(self, reference):
+        self._reference_field.value = reference
+
+    @property
     def addressee(self):
         return self._addressee_field.value
 
+    @addressee.setter
+    def addressee(self, addressee):
+        self._addressee_field.value = addressee
+
+    @property
     def bic(self):
         return self._bic_field.value
 
+    @bic.setter
+    def bic(self, bic):
+        self._bic_field.value = bic
+
+    @property
     def account_holder_reference(self):
         return self._account_holder_reference_field.value
 
+    @account_holder_reference.setter
+    def account_holder_reference(self, account_holder_reference):
+        self._account_holder_reference_field.value = account_holder_reference
+
+    @property
     def free(self):
         return self._free_field.value
 
+    @free.setter
+    def free(self, free):
+        self._free_field.value = free
+
+    @property
     def transaction_reference(self):
         return self._transaction_reference_field.value
 
+    @transaction_reference.setter
+    def transaction_reference(self, transaction_reference):
+        self._transaction_reference_field.value = transaction_reference
+
+    @property
     def related_reference(self):
         return self._related_reference_field.value
+
+    @related_reference.setter
+    def related_reference(self, related_reference):
+        self._related_reference_field.value = related_reference
 
 
 class OldBalanceRecord(Record):

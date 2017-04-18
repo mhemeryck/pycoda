@@ -28,48 +28,48 @@ class InitialRecordTest(TestCase):
         assert self.record.dumps() == self.RAW
 
     def test_creation_date(self):
-        self.record = InitialRecord(creation_date=date(2017, 3, 28))
-        assert self.record.creation_date() == date(2017, 3, 28)
+        self.record.creation_date = date(2017, 3, 28)
+        assert self.record.creation_date == date(2017, 3, 28)
 
     def test_bank_identification_number(self):
-        self.record = InitialRecord(bank_identification_number=725)
-        assert self.record.bank_identification_number() == 725
+        self.record.bank_identification_number = 725
+        assert self.record.bank_identification_number == 725
 
     def test_duplicate_code_true(self):
-        self.record = InitialRecord(duplicate_code='D')
-        assert self.record.is_duplicate()
+        self.record.is_duplicate = True
+        assert self.record.is_duplicate
 
     def test_duplicate_code_false(self):
-        self.record = InitialRecord(duplicate_code=' ')
-        assert not self.record.is_duplicate()
+        self.record.is_duplicate = False
+        assert not self.record.is_duplicate
 
     def test_reference(self):
-        self.record = InitialRecord(reference='00417969')
-        assert self.record.reference() == '00417969'
+        self.record.reference = '00417969'
+        assert self.record.reference == '00417969'
 
     def test_addressee(self):
-        self.record = InitialRecord(addressee='Unleashed NV')
-        assert self.record.addressee() == 'Unleashed NV'
+        self.record.addressee = 'Unleashed NV'
+        assert self.record.addressee == 'Unleashed NV'
 
     def test_bic(self):
-        self.record = InitialRecord(bic='KREDBEBB')
-        assert self.record.bic() == 'KREDBEBB'
+        self.record.bic = 'KREDBEBB'
+        assert self.record.bic == 'KREDBEBB'
 
     def test_account_holder_reference(self):
-        self.record = InitialRecord(account_holder_reference='00886946917')
-        assert self.record.account_holder_reference() == '00886946917'
+        self.record.account_holder_reference = '00886946917'
+        assert self.record.account_holder_reference == '00886946917'
 
     def test_free(self):
-        self.record = InitialRecord(free='12345')
-        assert self.record.free() == '12345'
+        self.record.free = '12345'
+        assert self.record.free == '12345'
 
     def test_transaction_reference(self):
-        self.record = InitialRecord(transaction_reference='abc123xyz')
-        assert self.record.transaction_reference() == 'abc123xyz'
+        self.record.transaction_reference = 'abc123xyz'
+        assert self.record.transaction_reference == 'abc123xyz'
 
     def test_related_reference(self):
-        self.record = InitialRecord(related_reference='qwerty')
-        assert self.record.related_reference() == 'qwerty'
+        self.record.related_reference = 'qwerty'
+        assert self.record.related_reference == 'qwerty'
 
 
 class OldBalanceRecordTest(TestCase):
