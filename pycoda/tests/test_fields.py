@@ -221,7 +221,7 @@ class NumericFieldTest(TestCase):
 
     def test_dumps_length_longer_than_value(self):
         field = NumericField(0, 2, value=1)
-        assert field.dumps() == '1 '
+        assert field.dumps() == '01'
 
     def test_dumps_length_shorter_than_value(self):
         field = NumericField(0, 1, value=12)
@@ -260,7 +260,7 @@ class NumericFieldTest(TestCase):
     def test_loads_dumps_equal_shorter(self):
         field = NumericField(0, 10)
         field.loads('12345     ')
-        assert field.dumps() == '12345     '
+        assert field.dumps() == '0000012345'
 
     def test_loads_from_dumps(self):
         field = NumericField(0, 6, value=123)
