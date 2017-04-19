@@ -6,7 +6,7 @@ from decimal import Decimal
 from unittest import TestCase
 
 from pycoda.fields import (NumericField, StringField, ZeroesField, DateField,
-                           EmptyField, BalanceField)
+                           EmptyField, BalanceField, BooleanField)
 
 
 class StringFieldTest(TestCase):
@@ -373,3 +373,66 @@ class BalanceFieldTest(TestCase):
         field = BalanceField(0)
         with self.assertRaises(NotImplementedError):
             field._parse('')
+
+
+class BooleanFieldTest(TestCase):
+    def test_default_value_empty(self):
+        field = BooleanField(0, 1)
+        assert field.dumps() == ' '
+
+    def test_dumps_default_1(self):
+        field = BooleanField(0, 1, value=True)
+        assert field.dumps() == '1'
+
+    def test_loads_default_1(self):
+        field = BooleanField(0, 1)
+        field.loads('1')
+        assert field.value
+
+    def test_loads_default_empty(self):
+        field = BooleanField(0, 1)
+        field.loads(' ')
+        assert not field.value
+
+    def test_loads_default_random(self):
+        field = BooleanField(0, 8,
+                             true_value='12345678',
+                             false_value='qwertyui')
+        field.loads('fsdfghjk')
+        assert not field.value
+
+    def test_loads_from_dumps_true(self):
+        field = BooleanField(0, 1, value=True)
+        field.loads(field.dumps())
+        assert field.value
+
+    def test_loads_from_dumps_false(self):
+        field = BooleanField(0, 1)
+        field.loads(field.dumps())
+        assert not field.value
+
+    def test_dumps_diferent_true_value(self):
+        field = BooleanField(0, 1, value=True, true_value='0')
+        assert field.dumps() == '0'
+
+    def test_dumps_diferent_false_value(self):
+        field = BooleanField(0, 1, value=False, false_value='x')
+        assert field.dumps() == 'x'
+
+    def test_loads_diferent_true_value(self):
+        field = BooleanField(0, 1, value=True, true_value='0')
+        field.loads('0')
+        assert field.value
+
+    def test_loads_diferent_false_value(self):
+        field = BooleanField(0, 1, value=False, false_value='x')
+        field.loads('x')
+        assert not field.value
+
+    def test_init_wrong_true_value_length(self):
+        with self.assertRaises(ValueError):
+            BooleanField(0, 1, true_value='123')
+
+    def test_init_wrong_false_value_length(self):
+        with self.assertRaises(ValueError):
+            BooleanField(0, 1, false_value='123')
