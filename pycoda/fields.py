@@ -96,7 +96,7 @@ class ZeroesField(StringField):
 
 class NumericField(StringField):
     def __init__(self, position, length, value=None, tag=None,
-                 pad='', align='<', head='', tail=''):
+                 pad=0, align='>', head='', tail=''):
         super(NumericField, self).__init__(position, length,
                                            value=value, tag=tag,
                                            pad=pad, align=align)

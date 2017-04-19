@@ -60,7 +60,7 @@ class InitialRecord(Record):
         self._zeroes_field = ZeroesField(1, 4)
         self._creation_date_field = DateField(5, 6, value=creation_date)
         self._bank_identification_number_field = NumericField(
-            11, 3, value=bank_identification_number, pad=0, align='>')
+            11, 3, value=bank_identification_number)
         self._application_code_field = StringField(
             14, 2, value=InitialRecord.APPLICATION_CODE)
         self._duplicate_field = StringField(
@@ -70,8 +70,7 @@ class InitialRecord(Record):
         self._addressee_field = StringField(34, 26, value=addressee)
         self._bic_field = StringField(60, 11, value=bic)
         self._account_holder_reference_field = NumericField(
-            71, 11, value=account_holder_reference,
-            pad='0', align='>', head='0')
+            71, 11, value=account_holder_reference, head='0')
         self._empty_field1 = EmptyField(82, 1)
         self._free_field = StringField(83, 5, value=free)
         self._transaction_reference_field = StringField(
@@ -223,7 +222,7 @@ class OldBalanceRecord(Record):
         self._account_description_field = StringField(
             90, 35, value=account_description)
         self._bank_statement_serial_number_field = NumericField(
-            125, 3, value=bank_statement_serial_number, pad=0, align='>')
+            125, 3, value=bank_statement_serial_number)
 
         self._fields = (
             self._identification_field,
@@ -271,9 +270,9 @@ class TransactionRecord(Record):
         self._article_field = NumericField(
             1, 1, value=TransactionRecord.ARTICLE)
         self._serial_number_field = NumericField(
-            2, 4, value=serial_number, pad='0', align='>')
+            2, 4, value=serial_number)
         self._detail_number_field = NumericField(
-            6, 4, value=detail_number, pad='0', align='>')
+            6, 4, value=detail_number)
         self._bank_reference_number_field = StringField(
             10, 21, value=bank_reference_number, tag='61/8')
         self._balance_sign_field = NumericField(
@@ -282,15 +281,14 @@ class TransactionRecord(Record):
         self._balance_date_field = DateField(
             47, 6, value=balance_date, tag='61/1')
         self._transaction_code_field = NumericField(
-            53, 8, value=transaction_code, pad='0', align='>', tag='61/6')
+            53, 8, value=transaction_code, tag='61/6')
         self._reference_type_field = NumericField(61, 1, value=reference_type)
         self._reference_field = StringField(
             62, 53, value=reference, tag='61/9')
         self._booking_date_field = DateField(
             115, 6, value=booking_date, tag='61/2')
         self._bank_statement_serial_number_field = NumericField(
-            121, 3, value=bank_statement_serial_number,
-            pad=0, align='>', tag='28/c')
+            121, 3, value=bank_statement_serial_number, tag='28/c')
         self._globalisation_code_field = NumericField(
             124, 1, value=globalisation_code)
         self._transaction_sequence_field = NumericField(
@@ -346,10 +344,8 @@ class TransactionPurposeRecord(Record):
             0, 1, value=TransactionPurposeRecord.IDENTIFICATION)
         self._article_field = NumericField(
             1, 1, value=TransactionPurposeRecord.ARTICLE)
-        self._serial_number_field = NumericField(
-            2, 4, value=serial_number, pad='0', align='>')
-        self._detail_number_field = NumericField(
-            6, 4, value=detail_number, pad='0', align='>')
+        self._serial_number_field = NumericField(2, 4, value=serial_number)
+        self._detail_number_field = NumericField(6, 4, value=detail_number)
         self._bank_statement_field = StringField(10, 53, value=bank_statement)
         self._client_reference_field = StringField(
             63, 35, value=client_reference)
@@ -404,10 +400,8 @@ class TransactionDetailRecord(Record):
             0, 1, value=TransactionDetailRecord.IDENTIFICATION)
         self._article_field = NumericField(
             1, 1, value=TransactionDetailRecord.ARTICLE)
-        self._serial_number_field = NumericField(
-            2, 4, value=serial_number, pad='0', align='>')
-        self._detail_number_field = NumericField(
-            6, 4, value=detail_number, pad='0', align='>')
+        self._serial_number_field = NumericField(2, 4, value=serial_number)
+        self._detail_number_field = NumericField(6, 4, value=detail_number)
         self._account_number_field = StringField(10, 37, value=account_number)
         self._account_holder_name_field = StringField(
             47, 35, value=account_holder_name)
@@ -456,14 +450,12 @@ class InformationRecord(Record):
             0, 1, value=TransactionDetailRecord.IDENTIFICATION)
         self._article_field = NumericField(
             1, 1, value=TransactionDetailRecord.ARTICLE)
-        self._serial_number_field = NumericField(
-            2, 4, value=serial_number, pad='0', align='>')
-        self._detail_number_field = NumericField(
-            6, 4, value=detail_number, pad='0', align='>')
+        self._serial_number_field = NumericField(2, 4, value=serial_number)
+        self._detail_number_field = NumericField(6, 4, value=detail_number)
         self._reference_number_field = StringField(
             10, 21, value=reference_number, tag='61/8')
         self._transaction_code_field = NumericField(
-            31, 8, value=transaction_code, pad='0', align='>', tag='61/6')
+            31, 8, value=transaction_code, tag='61/6')
         self._reference_type_field = NumericField(39, 1, value=reference_type)
         self._reference_field = StringField(40, 73, value=reference, tag='86')
         self._empty_field0 = EmptyField(113, 12)
@@ -511,10 +503,8 @@ class InformationPurposeRecord(Record):
             0, 1, value=InformationPurposeRecord.IDENTIFICATION)
         self._article_field = NumericField(
             1, 1, value=InformationPurposeRecord.ARTICLE)
-        self._serial_number_field = NumericField(
-            2, 4, value=serial_number, pad='0', align='>')
-        self._detail_number_field = NumericField(
-            6, 4, value=detail_number, pad='0', align='>')
+        self._serial_number_field = NumericField(2, 4, value=serial_number)
+        self._detail_number_field = NumericField(6, 4, value=detail_number)
         self._bank_reference_number_field = StringField(
             10, 105, value=bank_reference_number)
         self._empty_field0 = EmptyField(115, 10)
@@ -558,10 +548,8 @@ class InformationDetailRecord(Record):
             0, 1, value=InformationPurposeRecord.IDENTIFICATION)
         self._article_field = NumericField(
             1, 1, value=InformationPurposeRecord.ARTICLE)
-        self._serial_number_field = NumericField(
-            2, 4, value=serial_number, pad='0', align='>')
-        self._detail_number_field = NumericField(
-            6, 4, value=detail_number, pad='0', align='>')
+        self._serial_number_field = NumericField(2, 4, value=serial_number)
+        self._detail_number_field = NumericField(6, 4, value=detail_number)
         self._bank_reference_number_field = StringField(
             10, 90, value=bank_reference_number)
         self._empty_field0 = EmptyField(100, 25)
@@ -645,8 +633,8 @@ class ExtraMessageRecord(Record):
         self._identification_field = NumericField(
             0, 1, value=ExtraMessageRecord.IDENTIFICATION)
         self._empty_field0 = EmptyField(1, 1)
-        self._serial_number_field = NumericField(2, 4, pad='0', align='>')
-        self._detail_number_field = NumericField(6, 4, pad='0', align='>')
+        self._serial_number_field = NumericField(2, 4)
+        self._detail_number_field = NumericField(6, 4)
         self._empty_field1 = EmptyField(10, 22)
         self._extra_message_field = StringField(32, 80)
         self._empty_field2 = EmptyField(112, 15)
@@ -680,7 +668,7 @@ class FinalRecord(Record):
         self._identification_field = NumericField(
             0, 1, FinalRecord.IDENTIFICATION)
         self._empty_field0 = EmptyField(1, 15)
-        self._number_records_field = NumericField(16, 6, pad='0', align='>')
+        self._number_records_field = NumericField(16, 6)
         self._debit_field = BalanceField(22)
         self._credit_field = BalanceField(37)
         self._empty_field1 = EmptyField(52, 75)
