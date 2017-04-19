@@ -684,8 +684,8 @@ class FinalRecord(Record):
             self._sequence_field,
         )
 
-        def dumps(self):
-            return super(FinalRecord, self).dumps()
+    def dumps(self):
+        return super(FinalRecord, self).dumps()
 
-        def loads(self, string):
-            super(FinalRecord, self).loads(string)
+    def loads(self, string):
+        super(FinalRecord, self).loads(string)
