@@ -180,3 +180,31 @@ class BalanceField(Field):
         self.value = Decimal((parsed_tuple.sign,
                               parsed_tuple.digits,
                               -BalanceField.DECIMAL_PLACES))
+
+
+class BooleanField(StringField):
+    def __init__(self, position, length, value=False, tag=None,
+                 true_value='1', false_value=' '):
+        super(BooleanField, self).__init__(position, length,
+                                           value=value, tag=tag)
+        if len(true_value) != length:
+            raise ValueError('true_value has incorrect length')
+        self.true_value = true_value
+        if len(false_value) != length:
+            raise ValueError('false_value has incorrect length')
+        self.false_value = false_value
+
+    def _regex(self):
+        return super(BooleanField, self)._regex()
+
+    def _parse(self, string):
+        return super(BooleanField, self)._parse(string)
+
+    def dumps(self):
+        if self.value:
+            return self.true_value
+        else:
+            return self.false_value
+
+    def loads(self, string):
+        self.value = self._parse(string) == self.true_value
