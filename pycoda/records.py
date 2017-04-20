@@ -429,11 +429,11 @@ class TransactionDetailRecord(Record):
             self._information_sequence_field,
         )
 
-        def dumps(self):
-            return super(TransactionDetailRecord, self).dumps()
+    def dumps(self):
+        return super(TransactionDetailRecord, self).dumps()
 
-        def loads(self, string):
-            super(TransactionDetailRecord, self).loads(string)
+    def loads(self, string):
+        super(TransactionDetailRecord, self).loads(string)
 
 
 class InformationRecord(Record):
@@ -487,11 +487,11 @@ class InformationRecord(Record):
             self._information_sequence_field
         )
 
-        def dumps(self):
-            return super(InformationRecord, self).dumps()
+    def dumps(self):
+        return super(InformationRecord, self).dumps()
 
-        def loads(self, string):
-            super(InformationRecord, self).loads(string)
+    def loads(self, string):
+        super(InformationRecord, self).loads(string)
 
 
 class InformationPurposeRecord(Record):
@@ -580,11 +580,11 @@ class InformationDetailRecord(Record):
             self._information_sequence_field,
         )
 
-        def dumps(self):
-            return super(InformationDetailRecord, self).dumps()
+    def dumps(self):
+        return super(InformationDetailRecord, self).dumps()
 
-        def loads(self, string):
-            super(InformationDetailRecord, self).loads(string)
+    def loads(self, string):
+        super(InformationDetailRecord, self).loads(string)
 
 
 class NewBalanceRecord(Record):
