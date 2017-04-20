@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from pycoda.fields import (NumericField, StringField, ZeroesField, DateField,
-                           EmptyField, BalanceField)
+                           EmptyField, BalanceField, BooleanField)
 
 
 class RecordIdentification(object):
@@ -63,8 +63,8 @@ class InitialRecord(Record):
             11, 3, value=bank_identification_number)
         self._application_code_field = StringField(
             14, 2, value=InitialRecord.APPLICATION_CODE)
-        self._duplicate_field = StringField(
-            16, 1, value='D' if is_duplicate else ' ')
+        self._duplicate_field = BooleanField(
+            16, 1, value=is_duplicate, true_value='D', false_value=' ')
         self._empty_field0 = EmptyField(17, 7)
         self._reference_field = StringField(24, 10, value=reference)
         self._addressee_field = StringField(34, 26, value=addressee)
@@ -125,11 +125,11 @@ class InitialRecord(Record):
 
     @property
     def is_duplicate(self):
-        return self._duplicate_field.value == 'D'
+        return self._duplicate_field.value
 
     @is_duplicate.setter
     def is_duplicate(self, is_duplicate):
-        self._duplicate_field.value = 'D' if is_duplicate else ' '
+        self._duplicate_field.value = is_duplicate
 
     @property
     def reference(self):
@@ -291,11 +291,13 @@ class TransactionRecord(Record):
             121, 3, value=bank_statement_serial_number, tag='28/c')
         self._globalisation_code_field = NumericField(
             124, 1, value=globalisation_code)
-        self._transaction_sequence_field = NumericField(
-            125, 1, value=transaction_sequence)
+        self._transaction_sequence_field = BooleanField(
+            125, 1, value=transaction_sequence,
+            true_value='1', false_value='0')
         self._empty_field = EmptyField(126, 1)
-        self._information_sequence_field = NumericField(
-            127, 1, value=information_sequence)
+        self._information_sequence_field = BooleanField(
+            127, 1, value=information_sequence,
+            true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -354,11 +356,13 @@ class TransactionPurposeRecord(Record):
         self._purpose_catefory_field = StringField(
             117, 4, value=purpose_category)
         self._purpose_field = StringField(121, 4, value=purpose)
-        self._transaction_sequence_field = NumericField(
-            125, 1, value=transaction_sequence)
+        self._transaction_sequence_field = BooleanField(
+            125, 1, value=transaction_sequence,
+            true_value='1', false_value='0')
         self._empty_field1 = EmptyField(126, 1)
-        self._information_sequence_field = NumericField(
-            127, 1, value=information_sequence)
+        self._information_sequence_field = BooleanField(
+            127, 1, value=information_sequence,
+            true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -408,8 +412,9 @@ class TransactionDetailRecord(Record):
         self._description_field = StringField(82, 43, value=description)
         self._sequence_code_field = ZeroesField(125, 1)
         self._empty_field = EmptyField(126, 1)
-        self._information_sequence_field = NumericField(
-            127, 1, value=information_sequence)
+        self._information_sequence_field = BooleanField(
+            127, 1, value=information_sequence,
+            true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -459,11 +464,13 @@ class InformationRecord(Record):
         self._reference_type_field = NumericField(39, 1, value=reference_type)
         self._reference_field = StringField(40, 73, value=reference, tag='86')
         self._empty_field0 = EmptyField(113, 12)
-        self._transaction_sequence_field = NumericField(
-            125, 1, value=transaction_sequence)
+        self._transaction_sequence_field = BooleanField(
+            125, 1, value=transaction_sequence,
+            true_value='1', false_value='0')
         self._empty_field1 = EmptyField(126, 1)
-        self._information_sequence_field = NumericField(
-            127, 1, value=information_sequence)
+        self._information_sequence_field = BooleanField(
+            127, 1, value=information_sequence,
+            true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -508,11 +515,13 @@ class InformationPurposeRecord(Record):
         self._bank_reference_number_field = StringField(
             10, 105, value=bank_reference_number)
         self._empty_field0 = EmptyField(115, 10)
-        self._information_sequence_field0 = NumericField(
-            125, 1, value=information_sequence0)
+        self._information_sequence_field0 = BooleanField(
+            125, 1, value=information_sequence0,
+            true_value='1', false_value='0')
         self._empty_field1 = EmptyField(126, 1)
-        self._information_sequence_field1 = NumericField(
-            127, 1, value=information_sequence1)
+        self._information_sequence_field1 = BooleanField(
+            127, 1, value=information_sequence1,
+            true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -555,8 +564,9 @@ class InformationDetailRecord(Record):
         self._empty_field0 = EmptyField(100, 25)
         self._sequence_code_field = ZeroesField(125, 1)
         self._empty_field1 = EmptyField(126, 1)
-        self._information_sequence_field = NumericField(
-            127, 1, value=information_sequence)
+        self._information_sequence_field = BooleanField(
+            127, 1, value=information_sequence,
+            true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -603,7 +613,8 @@ class NewBalanceRecord(Record):
         self._balance_date_field = DateField(
             57, 6, value=balance_date, tag='62F/2')
         self._empty_field = EmptyField(63, 64)
-        self._sequence_field = NumericField(127, 1, value=sequence)
+        self._sequence_field = BooleanField(
+            127, 1, value=sequence, true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -638,7 +649,8 @@ class ExtraMessageRecord(Record):
         self._empty_field1 = EmptyField(10, 22)
         self._extra_message_field = StringField(32, 80)
         self._empty_field2 = EmptyField(112, 15)
-        self._sequence_field = NumericField(127, 1)
+        self._sequence_field = BooleanField(
+            127, 1, true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -672,7 +684,8 @@ class FinalRecord(Record):
         self._debit_field = BalanceField(22)
         self._credit_field = BalanceField(37)
         self._empty_field1 = EmptyField(52, 75)
-        self._sequence_field = NumericField(127, 1)
+        self._sequence_field = BooleanField(
+            127, 1, true_value='1', false_value='2')
 
         self._fields = (
             self._identification_field,
