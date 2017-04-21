@@ -48,7 +48,7 @@ class CodaFile(object):
         for line in string.splitlines():
             record = self._record_from_header(line)
             record.loads(line)
-            self._records.append((record))
+            self._records.append(record)
 
     def dumps(self, sep=linesep):
         return sep.join(record.dumps() for record in self._records)

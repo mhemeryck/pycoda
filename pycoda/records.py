@@ -15,7 +15,7 @@ class RecordIdentification(object):
     FINAL = 9
 
 
-class RecordArticle:
+class RecordArticle(object):
     DEFAULT = 1
     PURPOSE = 2
     DETAIL = 3
@@ -282,7 +282,7 @@ class TransactionPurposeRecord(Record):
             63, 35, value=client_reference)
         self._bic_field = StringField(98, 11, value=bic)
         self._empty_field0 = EmptyField(109, 8)
-        self._purpose_catefory_field = StringField(
+        self._purpose_category_field = StringField(
             117, 4, value=purpose_category)
         self._purpose_field = StringField(121, 4, value=purpose)
         self._transaction_sequence_field = BooleanField(
@@ -302,7 +302,7 @@ class TransactionPurposeRecord(Record):
             self._client_reference_field,
             self._bic_field,
             self._empty_field0,
-            self._purpose_catefory_field,
+            self._purpose_category_field,
             self._purpose_field,
             self._transaction_sequence_field,
             self._empty_field1,
