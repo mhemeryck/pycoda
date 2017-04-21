@@ -31,8 +31,8 @@ for record_type in RECORD_TYPES:
 
 
 class CodaFile(object):
-    def __init__(self):
-        self._records = []
+    def __init__(self, records=None):
+        self._records = records or []
 
     def _record_from_header(self, line):
         """Builds record from type, read from first 2 entries on the line"""
@@ -44,7 +44,10 @@ class CodaFile(object):
             article_id = None
         return record_map.get((record_id, article_id))()
 
-    def loads(self, string):
+    def loads(self, string, append=False):
+        # By default, do not append for a new load
+        if not append:
+            self._records = []
         for line in string.splitlines():
             record = self._record_from_header(line)
             record.loads(line)
