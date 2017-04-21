@@ -350,6 +350,10 @@ class BalanceFieldTest(TestCase):
         field.loads('000000034568797')
         assert field.value == Decimal('34568.797')
 
+    def test_dumps_none(self):
+        field = BalanceField(0)
+        assert field.dumps() == '000000000000000'
+
     def test_dumps(self):
         field = BalanceField(0, value=Decimal('65536.128'))
         assert field.dumps() == '000000065536128'
