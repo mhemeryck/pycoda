@@ -357,9 +357,9 @@ class InformationRecord(Record):
         super(InformationRecord, self).__init__()
 
         self._identification_field = NumericField(
-            0, 1, value=TransactionDetailRecord.IDENTIFICATION)
+            0, 1, value=InformationRecord.IDENTIFICATION)
         self._article_field = NumericField(
-            1, 1, value=TransactionDetailRecord.ARTICLE)
+            1, 1, value=InformationRecord.ARTICLE)
         self._serial_number_field = NumericField(2, 4, value=serial_number)
         self._detail_number_field = NumericField(6, 4, value=detail_number)
         self._reference_number_field = StringField(
