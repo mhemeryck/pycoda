@@ -71,6 +71,13 @@ class InitialRecordTest(TestCase):
         self.record.related_reference = 'qwerty'
         assert self.record.related_reference == 'qwerty'
 
+    def test_get_unknown_field_value_raises(self):
+        with self.assertRaises(AttributeError):
+            x = self.record.some_value  # noqa
+
+    def test_set_unknown_field_value_passes(self):
+        self.record.some_value = 'something wicked'
+
 
 class OldBalanceRecordTest(TestCase):
     RAW = ('12256BE02737026917240                  EUR0000005020346650150916'

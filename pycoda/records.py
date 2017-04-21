@@ -28,6 +28,21 @@ class Record(object):
     def __init__(self):
         self._fields = ()
 
+    def __getattr__(self, item):
+        """By implementing this, all the fields their values are accessible"""
+        field_name = '_{item}_field'.format(item=item)
+        if field_name not in self.__dict__.keys():
+            raise AttributeError('Unknown value')
+        return self.__dict__[field_name].value
+
+    def __setattr__(self, key, value):
+        """By implementing this, all the fields their values are accessible"""
+        field_name = '_{key}_field'.format(key=key)
+        if field_name in self.__dict__.keys():
+            self.__dict__[field_name].value = value
+        else:
+            super(Record, self).__setattr__(key, value)
+
     def dumps(self):
         return ''.join(field.dumps() for field in self._fields)
 
@@ -100,92 +115,6 @@ class InitialRecord(Record):
             self._empty_field2,
             self._version_code_field,
         )
-
-    def dumps(self):
-        return super(InitialRecord, self).dumps()
-
-    def loads(self, string):
-        super(InitialRecord, self).loads(string)
-
-    @property
-    def creation_date(self):
-        return self._creation_date_field.value
-
-    @creation_date.setter
-    def creation_date(self, creation_date):
-        self._creation_date_field.value = creation_date
-
-    @property
-    def bank_identification_number(self):
-        return self._bank_identification_number_field.value
-
-    @bank_identification_number.setter
-    def bank_identification_number(self, number):
-        self._bank_identification_number_field.value = number
-
-    @property
-    def is_duplicate(self):
-        return self._duplicate_field.value
-
-    @is_duplicate.setter
-    def is_duplicate(self, is_duplicate):
-        self._duplicate_field.value = is_duplicate
-
-    @property
-    def reference(self):
-        return self._reference_field.value
-
-    @reference.setter
-    def reference(self, reference):
-        self._reference_field.value = reference
-
-    @property
-    def addressee(self):
-        return self._addressee_field.value
-
-    @addressee.setter
-    def addressee(self, addressee):
-        self._addressee_field.value = addressee
-
-    @property
-    def bic(self):
-        return self._bic_field.value
-
-    @bic.setter
-    def bic(self, bic):
-        self._bic_field.value = bic
-
-    @property
-    def account_holder_reference(self):
-        return self._account_holder_reference_field.value
-
-    @account_holder_reference.setter
-    def account_holder_reference(self, account_holder_reference):
-        self._account_holder_reference_field.value = account_holder_reference
-
-    @property
-    def free(self):
-        return self._free_field.value
-
-    @free.setter
-    def free(self, free):
-        self._free_field.value = free
-
-    @property
-    def transaction_reference(self):
-        return self._transaction_reference_field.value
-
-    @transaction_reference.setter
-    def transaction_reference(self, transaction_reference):
-        self._transaction_reference_field.value = transaction_reference
-
-    @property
-    def related_reference(self):
-        return self._related_reference_field.value
-
-    @related_reference.setter
-    def related_reference(self, related_reference):
-        self._related_reference_field.value = related_reference
 
 
 class OldBalanceRecord(Record):
