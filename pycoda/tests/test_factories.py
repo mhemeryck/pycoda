@@ -12,7 +12,7 @@ from pycoda.factories import (InitialRecordFactory, OldBalanceRecordFactory,
                               InformationDetailRecordFactory,
                               NewBalanceRecordFactory,
                               FinalRecordFactory,
-                              ExtraMessageRecordFactory)
+                              ExtraMessageRecordFactory, CodaFileFactory)
 
 
 class InitialRecordFactoryTest(TestCase):
@@ -123,3 +123,23 @@ class FinalRecordFactoryTest(TestCase):
         raw = self.record.dumps()
         self.record.loads(raw)
         assert self.record.dumps() == raw
+
+
+class CodaFileFactoryTest(TestCase):
+    def setUp(self):
+        self.codafile = CodaFileFactory()
+
+    def test_loads_from_dumps(self):
+        raw = self.codafile.dumps()
+        self.codafile.loads(raw)
+        assert self.codafile.dumps() == raw
+
+
+class CodaFileFactoryDirectDebitTest(TestCase):
+    def setUp(self):
+        self.codafile = CodaFileFactory(direct_debit=True)
+
+    def test_loads_from_dumps(self):
+        raw = self.codafile.dumps()
+        self.codafile.loads(raw)
+        assert self.codafile.dumps() == raw
