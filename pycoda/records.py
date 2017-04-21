@@ -519,19 +519,23 @@ class ExtraMessageRecord(Record):
     IDENTIFICATION = RecordIdentification.EXTRA_MESSAGE
     ARTICLE = None
 
-    def __init__(self):
+    def __init__(self,
+                 serial_number=None,
+                 detail_number=None,
+                 extra_message=None,
+                 has_sequence=None,):
         super(ExtraMessageRecord, self).__init__()
 
         self._identification_field = NumericField(
             0, 1, value=ExtraMessageRecord.IDENTIFICATION)
         self._empty_field0 = EmptyField(1, 1)
-        self._serial_number_field = NumericField(2, 4)
-        self._detail_number_field = NumericField(6, 4)
+        self._serial_number_field = NumericField(2, 4, value=serial_number)
+        self._detail_number_field = NumericField(6, 4, value=detail_number)
         self._empty_field1 = EmptyField(10, 22)
-        self._extra_message_field = StringField(32, 80)
+        self._extra_message_field = StringField(32, 80, value=extra_message)
         self._empty_field2 = EmptyField(112, 15)
         self._sequence_field = BooleanField(
-            127, 1, true_value='1', false_value='0')
+            127, 1, value=has_sequence, true_value='1', false_value='0')
 
         self._fields = (
             self._identification_field,
@@ -549,18 +553,22 @@ class FinalRecord(Record):
     IDENTIFICATION = RecordIdentification.FINAL
     ARTICLE = None
 
-    def __init__(self):
+    def __init__(self,
+                 number_records=None,
+                 debit=None,
+                 credit=None,
+                 has_sequence=None):
         super(FinalRecord, self).__init__()
 
         self._identification_field = NumericField(
             0, 1, FinalRecord.IDENTIFICATION)
         self._empty_field0 = EmptyField(1, 15)
-        self._number_records_field = NumericField(16, 6)
-        self._debit_field = BalanceField(22)
-        self._credit_field = BalanceField(37)
+        self._number_records_field = NumericField(16, 6, value=number_records)
+        self._debit_field = BalanceField(22, value=debit)
+        self._credit_field = BalanceField(37, value=credit)
         self._empty_field1 = EmptyField(52, 75)
         self._sequence_field = BooleanField(
-            127, 1, true_value='1', false_value='2')
+            127, 1, value=has_sequence, true_value='1', false_value='2')
 
         self._fields = (
             self._identification_field,
