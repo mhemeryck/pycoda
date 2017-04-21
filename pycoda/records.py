@@ -166,12 +166,6 @@ class OldBalanceRecord(Record):
             self._bank_statement_serial_number_field,
         )
 
-    def dumps(self):
-        return super(OldBalanceRecord, self).dumps()
-
-    def loads(self, string):
-        super(OldBalanceRecord, self).loads(string)
-
 
 class TransactionRecord(Record):
     IDENTIFICATION = RecordIdentification.TRANSACTION
@@ -248,12 +242,6 @@ class TransactionRecord(Record):
             self._information_sequence_field,
         )
 
-    def dumps(self):
-        return super(TransactionRecord, self).dumps()
-
-    def loads(self, string):
-        super(TransactionRecord, self).loads(string)
-
 
 class TransactionPurposeRecord(Record):
     IDENTIFICATION = RecordIdentification.TRANSACTION
@@ -309,12 +297,6 @@ class TransactionPurposeRecord(Record):
             self._information_sequence_field,
         )
 
-    def dumps(self):
-        return super(TransactionPurposeRecord, self).dumps()
-
-    def loads(self, string):
-        super(TransactionPurposeRecord, self).loads(string)
-
 
 class TransactionDetailRecord(Record):
     IDENTIFICATION = RecordIdentification.TRANSACTION
@@ -357,12 +339,6 @@ class TransactionDetailRecord(Record):
             self._empty_field,
             self._information_sequence_field,
         )
-
-    def dumps(self):
-        return super(TransactionDetailRecord, self).dumps()
-
-    def loads(self, string):
-        super(TransactionDetailRecord, self).loads(string)
 
 
 class InformationRecord(Record):
@@ -416,12 +392,6 @@ class InformationRecord(Record):
             self._information_sequence_field
         )
 
-    def dumps(self):
-        return super(InformationRecord, self).dumps()
-
-    def loads(self, string):
-        super(InformationRecord, self).loads(string)
-
 
 class InformationPurposeRecord(Record):
     IDENTIFICATION = RecordIdentification.INFORMATION
@@ -464,12 +434,6 @@ class InformationPurposeRecord(Record):
             self._information_sequence_field1,
         )
 
-    def dumps(self):
-        return super(InformationPurposeRecord, self).dumps()
-
-    def loads(self, string):
-        super(InformationPurposeRecord, self).loads(string)
-
 
 class InformationDetailRecord(Record):
     IDENTIFICATION = RecordIdentification.INFORMATION
@@ -508,12 +472,6 @@ class InformationDetailRecord(Record):
             self._empty_field1,
             self._information_sequence_field,
         )
-
-    def dumps(self):
-        return super(InformationDetailRecord, self).dumps()
-
-    def loads(self, string):
-        super(InformationDetailRecord, self).loads(string)
 
 
 class NewBalanceRecord(Record):
@@ -556,12 +514,6 @@ class NewBalanceRecord(Record):
             self._sequence_field,
         )
 
-    def dumps(self):
-        return super(NewBalanceRecord, self).dumps()
-
-    def loads(self, string):
-        super(NewBalanceRecord, self).loads(string)
-
 
 class ExtraMessageRecord(Record):
     IDENTIFICATION = RecordIdentification.EXTRA_MESSAGE
@@ -592,12 +544,6 @@ class ExtraMessageRecord(Record):
             self._sequence_field,
         )
 
-    def dumps(self):
-        return super(ExtraMessageRecord, self).dumps()
-
-    def loads(self, string):
-        super(ExtraMessageRecord, self).loads(string)
-
 
 class FinalRecord(Record):
     IDENTIFICATION = RecordIdentification.FINAL
@@ -625,9 +571,3 @@ class FinalRecord(Record):
             self._empty_field1,
             self._sequence_field,
         )
-
-    def dumps(self):
-        return super(FinalRecord, self).dumps()
-
-    def loads(self, string):
-        super(FinalRecord, self).loads(string)
