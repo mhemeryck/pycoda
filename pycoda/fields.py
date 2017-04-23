@@ -24,7 +24,8 @@ class Field(with_metaclass(ABCMeta, object)):
         """Find match with regex and return if found"""
         match = re.match(self._regex(), string)
         if match is None:
-            raise ValueError('Specified string does not match field regex')
+            raise ValueError('Specified string {} '
+                             'does not match field regex'.format(string))
         return match.group('value')
 
     @abstractmethod
