@@ -78,6 +78,50 @@ class InitialRecordTest(TestCase):
     def test_set_unknown_field_value_passes(self):
         self.record.some_value = 'something wicked'
 
+    def test_field_dict_creation_date(self):
+        self.record.creation_date = date(1986, 3, 28)
+        assert self.record.field_dict()['creation_date'] == date(1986, 3, 28)
+
+    def test_field_dict_bank_identification_number(self):
+        self.record.bank_identification_number = 123
+        assert self.record.field_dict()['bank_identification_number'] == 123
+
+    def test_field_dict_application_code(self):
+        self.record.application_code = '05'
+        assert self.record.field_dict()['application_code'] == '05'
+
+    def test_field_dict_duplicate(self):
+        self.record.duplicate = True
+        assert self.record.field_dict()['duplicate']
+
+    def test_field_dict_reference(self):
+        self.record.reference = 'QWERTY'
+        assert self.record.field_dict()['reference'] == 'QWERTY'
+
+    def test_field_dict_addressee(self):
+        self.record.addressee = 'Some guy'
+        assert self.record.field_dict()['addressee'] == 'Some guy'
+
+    def test_field_dict_bic(self):
+        self.record.bic = 'KREDBEBB'
+        assert self.record.field_dict()['bic'] == 'KREDBEBB'
+
+    def test_field_dict_account_holder_reference(self):
+        self.record.account_holder_reference = 'QWERTY'
+        assert self.record.field_dict()['account_holder_reference'] == 'QWERTY'
+
+    def test_field_dict_free(self):
+        self.record.free = 'WILLY'
+        assert self.record.field_dict()['free'] == 'WILLY'
+
+    def test_field_dict_transaction_reference(self):
+        self.record.transaction_reference = 'AZERTY'
+        assert self.record.field_dict()['transaction_reference'] == 'AZERTY'
+
+    def test_field_dict_related_reference(self):
+        self.record.related_reference = 'DVORAK'
+        assert self.record.field_dict()['related_reference'] == 'DVORAK'
+
 
 class OldBalanceRecordTest(TestCase):
     RAW = ('12256BE02737026917240                  EUR0000005020346650150916'
