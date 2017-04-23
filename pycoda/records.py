@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import re
+
 from pycoda.fields import (NumericField, StringField, ZeroesField, DateField,
                            EmptyField, BalanceField, BooleanField)
 
@@ -49,6 +51,17 @@ class Record(object):
     def loads(self, string):
         for field in self._fields:
             field.loads(string[field.position:field.position + field.length])
+
+    def field_dict(self):
+        """Dict-like representation of all field values"""
+        regex = re.compile(r'^_(?P<name>((\w+)(_)?)+)_field')
+        dictionary = {}
+        for key, field in self.__dict__.items():
+            if field in self._fields:
+                match = regex.match(key)
+                if match is not None:
+                    dictionary[match.group('name')] = field.value
+        return dictionary
 
 
 class InitialRecord(Record):
