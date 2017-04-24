@@ -5,3 +5,6 @@ install: "pip install -r requirements.txt"
 script:
  - flake8 .
  - python -m unittest discover
+ - coverage run --source=pycoda/ -m unittest discover
+after_success:
+ - coveralls
