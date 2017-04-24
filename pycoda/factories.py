@@ -178,7 +178,13 @@ class CodaFileFactory(Factory):
     class Meta:
         model = CodaFile
 
-    records = None
+    records = [
+        InitialRecordFactory(),
+        OldBalanceRecordFactory(),
+        TransactionRecordFactory(),
+        NewBalanceRecordFactory(),
+        FinalRecordFactory(),
+    ]
 
     class Params:
         direct_debit = Trait(
