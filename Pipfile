@@ -9,7 +9,7 @@ flake8 = "*"
 coverage = "*"
 
 [packages]
-pyyaml = "==5.1b3"
+pyyaml = "*"
 
 [requires]
 python_version = "2.7"
