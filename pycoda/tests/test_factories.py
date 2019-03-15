@@ -1,18 +1,21 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from unittest import TestCase
 
-from pycoda.factories import (InitialRecordFactory, OldBalanceRecordFactory,
-                              TransactionRecordFactory,
-                              TransactionPurposeRecordFactory,
-                              TransactionDetailRecordFactory,
-                              InformationRecordFactory,
-                              InformationPurposeRecordFactory,
-                              InformationDetailRecordFactory,
-                              NewBalanceRecordFactory,
-                              FinalRecordFactory,
-                              ExtraMessageRecordFactory, CodaFileFactory)
+from pycoda.factories import (
+    CodaFileFactory,
+    ExtraMessageRecordFactory,
+    FinalRecordFactory,
+    InformationDetailRecordFactory,
+    InformationPurposeRecordFactory,
+    InformationRecordFactory,
+    InitialRecordFactory,
+    NewBalanceRecordFactory,
+    OldBalanceRecordFactory,
+    TransactionDetailRecordFactory,
+    TransactionPurposeRecordFactory,
+    TransactionRecordFactory,
+)
 
 
 class InitialRecordFactoryTest(TestCase):

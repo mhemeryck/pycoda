@@ -1,6 +1,6 @@
 # pycoda
 
-[![Build Status](https://travis-ci.org/mhemeryck/pycoda.svg?branch=master)](https://travis-ci.org/mhemeryck/pycoda)
+[![CircleCI](https://circleci.com/gh/mhemeryck/pycoda.svg?style=svg)](https://circleci.com/gh/mhemeryck/pycoda)
 [![Coverage Status](https://coveralls.io/repos/github/mhemeryck/pycoda/badge.svg)](https://coveralls.io/github/mhemeryck/pycoda)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 

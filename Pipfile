@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+black = "==18.9b0"
+pytest-cov = "*"
+isort = "*"
+coveralls = "*"
+
+[packages]
+factory-boy = "*"
+pytest-socket = "*"
+
+[requires]
+python_version = "3.7"

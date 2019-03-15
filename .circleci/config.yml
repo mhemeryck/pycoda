@@ -1,0 +1,74 @@
+version: 2
+references:
+  restore_caches: &restore_caches
+    restore_cache:
+      keys:
+        - source-{{ .Branch }}
+        - deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+  install_deps: &install_deps
+    run:
+      name: Install dependencies
+      command: |
+        pipenv install --dev --ignore-pipfile --deploy
+
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.7.2
+
+    steps:
+      - checkout
+      - *restore_caches
+      - *install_deps
+      - save_cache:
+          key: source-{{ .Branch }}
+          paths:
+            - ".git"
+      - save_cache:
+          key: deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - "/home/circleci/.local/share/virtualenvs/"
+  lint:
+    docker:
+      - image: circleci/python:3.7.2
+
+    steps:
+      - checkout
+      - *restore_caches
+      - *install_deps
+      - run:
+          name: Black autoformat check
+          command: |
+            pipenv run black --check .
+      - run:
+          name: Isort import order check
+          command: |
+            pipenv run isort -c
+  test:
+    docker:
+      - image: circleci/python:3.7.2
+
+    steps:
+      - checkout
+      - *restore_caches
+      - *install_deps
+      - run:
+          name: Unit tests
+          command: |
+            pipenv run py.test
+      - run:
+          name: Coverage upload
+          command: |
+            pipenv run coveralls
+
+workflows:
+  version: 2
+  build_test:
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
