@@ -1,17 +1,21 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from os import linesep
 from unittest import TestCase
 
 from pycoda.codafile import CodaFile
-from pycoda.tests.test_records import (InitialRecordTest, OldBalanceRecordTest,
-                                       TransactionRecordTest, FinalRecordTest,
-                                       NewBalanceRecordTest)
+from pycoda.tests.test_records import (
+    FinalRecordTest,
+    InitialRecordTest,
+    NewBalanceRecordTest,
+    OldBalanceRecordTest,
+    TransactionRecordTest,
+)
 
 
 class CodaFileTest(TestCase):
     """Build a minimum test from previous record tests"""
+
     def setUp(self):
         self.lines = (
             InitialRecordTest.RAW,

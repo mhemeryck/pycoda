@@ -1,15 +1,21 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from os import linesep
 
-from pycoda.records import (InitialRecord, OldBalanceRecord, TransactionRecord,
-                            TransactionPurposeRecord, TransactionDetailRecord,
-                            InformationRecord,
-                            InformationPurposeRecord, InformationDetailRecord,
-                            NewBalanceRecord, ExtraMessageRecord, FinalRecord,
-                            RecordIdentification)
-
+from pycoda.records import (
+    ExtraMessageRecord,
+    FinalRecord,
+    InformationDetailRecord,
+    InformationPurposeRecord,
+    InformationRecord,
+    InitialRecord,
+    NewBalanceRecord,
+    OldBalanceRecord,
+    RecordIdentification,
+    TransactionDetailRecord,
+    TransactionPurposeRecord,
+    TransactionRecord,
+)
 
 RECORD_TYPES = (
     InitialRecord,
@@ -37,8 +43,10 @@ class CodaFile(object):
     def _record_from_header(self, line):
         """Builds record from type, read from first 2 entries on the line"""
         record_id = int(line[0])
-        if record_id in (RecordIdentification.TRANSACTION,
-                         RecordIdentification.INFORMATION):
+        if record_id in (
+            RecordIdentification.TRANSACTION,
+            RecordIdentification.INFORMATION,
+        ):
             article_id = int(line[1])
         else:
             article_id = None
