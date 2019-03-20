@@ -28,7 +28,7 @@ class VerifyVersionCommand(install):
 
 def readme():
     """print long description"""
-    with open("README.rst") as f:
+    with open("README.md") as f:
         return f.read()
 
 
