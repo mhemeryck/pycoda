@@ -70,22 +70,22 @@ jobs:
       - *restore_caches
       - *install_deps
       - run:
-          name: git tag check
+          name: Check git tag
           command: |
             pipenv run python setup.py verify
       - run:
-          name: init .pypirc
+          name: Init .pypirc
           command: |
             echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = $PYPI_USER" >> ~/.pypirc
             echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
       - run:
-          name: create package
+          name: Create package
           command: |
             pipenv run python setup.py sdist
             pipenv run python setup.py bdist_wheel
       - run:
-          name: upload to pypi
+          name: Upload to PyPI
           command: |
             pipenv run twine upload dist/*
 
