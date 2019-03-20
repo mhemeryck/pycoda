@@ -9,6 +9,7 @@ black = "==18.9b0"
 pytest-cov = "*"
 isort = "*"
 coveralls = "*"
+twine = "*"
 
 [packages]
 factory-boy = "*"
