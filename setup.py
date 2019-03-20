@@ -37,6 +37,7 @@ setup(
     version=pycoda.__version__,
     description="Coded statement of Account (CODA) python API",
     long_description=readme(),
+    long_description_content_type="text/markdown",
     url="https://github.com/mhemeryck/pycoda",
     install_requires=install_requires,
     author="Martijn Hemeryck",
