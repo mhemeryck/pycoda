@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/mhemeryck/pycoda/badge.svg)](https://coveralls.io/github/mhemeryck/pycoda)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://badge.fury.io/py/codapy.svg)](https://badge.fury.io/py/codapy)
+[![Code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 ## Quickstart
 
