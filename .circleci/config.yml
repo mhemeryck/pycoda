@@ -60,7 +60,18 @@ jobs:
           name: Coverage upload
           command: |
             pipenv run coveralls
+  check:
+    docker:
+      - image: circleci/python:3.7.2
 
+    steps:
+      - checkout
+      - *restore_caches
+      - *install_deps
+      - run:
+          name: Pipenv dependencies check
+          command: |
+            pipenv check
   deploy:
     docker:
       - image: circleci/python:3.7.2
@@ -104,6 +115,12 @@ workflows:
             tags:
               only: /.*/
       - test:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /.*/
+      - check:
           requires:
             - build
           filters:
