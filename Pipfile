@@ -10,10 +10,10 @@ pytest-cov = "*"
 isort = "*"
 coveralls = "*"
 twine = "*"
+pytest-socket = "*"
 
 [packages]
 factory-boy = "*"
-pytest-socket = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
