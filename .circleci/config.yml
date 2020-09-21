@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Isort import order check
           command: |
-            pipenv run isort -c
+            pipenv run isort . -c
   test:
     docker:
       - image: circleci/python:3.8

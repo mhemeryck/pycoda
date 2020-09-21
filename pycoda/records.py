@@ -11,7 +11,7 @@ from pycoda.fields import (
 )
 
 
-class RecordIdentification(object):
+class RecordIdentification:
     INITIAL = 0
     OLD_BALANCE = 1
     TRANSACTION = 2
@@ -21,13 +21,13 @@ class RecordIdentification(object):
     FINAL = 9
 
 
-class RecordArticle(object):
+class RecordArticle:
     DEFAULT = 1
     PURPOSE = 2
     DETAIL = 3
 
 
-class Record(object):
+class Record:
     IDENTIFICATION = None
     ARTICLE = None
 
@@ -47,7 +47,7 @@ class Record(object):
         if field_name in self.__dict__.keys():
             self.__dict__[field_name].value = value
         else:
-            super(Record, self).__setattr__(key, value)
+            super().__setattr__(key, value)
 
     def dumps(self):
         return "".join(field.dumps() for field in self._fields)
@@ -87,7 +87,7 @@ class InitialRecord(Record):
         transaction_reference=None,
         related_reference=None,
     ):
-        super(Record, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=InitialRecord.IDENTIFICATION
@@ -160,7 +160,7 @@ class OldBalanceRecord(Record):
         account_description=None,
         bank_statement_serial_number=None,
     ):
-        super(OldBalanceRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=OldBalanceRecord.IDENTIFICATION
@@ -212,7 +212,7 @@ class TransactionRecord(Record):
         transaction_sequence=None,
         information_sequence=None,
     ):
-        super(TransactionRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=TransactionPurposeRecord.IDENTIFICATION
@@ -281,7 +281,7 @@ class TransactionPurposeRecord(Record):
         transaction_sequence=None,
         information_sequence=None,
     ):
-        super(Record, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=TransactionPurposeRecord.IDENTIFICATION
@@ -333,7 +333,7 @@ class TransactionDetailRecord(Record):
         description=None,
         information_sequence=None,
     ):
-        super(TransactionDetailRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=TransactionDetailRecord.IDENTIFICATION
@@ -379,7 +379,7 @@ class InformationRecord(Record):
         transaction_sequence=None,
         information_sequence=None,
     ):
-        super(InformationRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=InformationRecord.IDENTIFICATION
@@ -432,7 +432,7 @@ class InformationPurposeRecord(Record):
         information_sequence0=None,
         information_sequence1=None,
     ):
-        super(InformationPurposeRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=InformationPurposeRecord.IDENTIFICATION
@@ -476,7 +476,7 @@ class InformationDetailRecord(Record):
         bank_reference_number=None,
         information_sequence=None,
     ):
-        super(InformationDetailRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=InformationPurposeRecord.IDENTIFICATION
@@ -520,7 +520,7 @@ class NewBalanceRecord(Record):
         balance_date=None,
         sequence=None,
     ):
-        super(NewBalanceRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=NewBalanceRecord.IDENTIFICATION
@@ -558,7 +558,7 @@ class ExtraMessageRecord(Record):
         extra_message=None,
         has_sequence=None,
     ):
-        super(ExtraMessageRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(
             0, 1, value=ExtraMessageRecord.IDENTIFICATION
@@ -590,7 +590,7 @@ class FinalRecord(Record):
     ARTICLE = None
 
     def __init__(self, number_records=None, debit=None, credit=None, has_sequence=None):
-        super(FinalRecord, self).__init__()
+        super().__init__()
 
         self._identification_field = NumericField(0, 1, FinalRecord.IDENTIFICATION)
         self._empty_field0 = EmptyField(1, 15)

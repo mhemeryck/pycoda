@@ -9,6 +9,7 @@
 ## Quickstart
 
 Generate a CODA file from a factory:
+
 ```python
 >>> from pycoda.factories import CodaFileFactory
 >>> coda_file = CodaFileFactory()
@@ -21,6 +22,7 @@ Generate a CODA file from a factory:
 ```
 
 Check the values of the first record:
+
 ```python
 >>> coda_file.records[0].field_dict()
 {'account_holder_reference': 61411200863,
@@ -41,6 +43,7 @@ Check the values of the first record:
 ```
 
 Update a named field of the first record:
+
 ```python
 >>> coda_file.records[0].addressee = u'John Doe'
 >>> print coda_file.records[0].dumps()
@@ -48,6 +51,7 @@ Update a named field of the first record:
 ```
 
 Make a new CODA file object and load the records / fields from the previous object string representation:
+
 ```python
 >>> plain = coda_file.dumps()
 >>> from pycoda.codafile import CodaFile
@@ -66,10 +70,12 @@ True
 ## Model
 
 The following model hierarchy is employed:
-  * CODA file: can consist of multiple records of given type
-  * Record type: each of the record types hold different specified named fields of given type
-  * Field type: the fields hold the actual values. All the parsing / printing footwork is done at this level
+
+- CODA file: can consist of multiple records of given type
+- Record type: each of the record types hold different specified named fields of given type
+- Field type: the fields hold the actual values. All the parsing / printing footwork is done at this level
 
 For each of those levels, the objects can:
-  * loads: set value from string representation
-  * dumps: generate string representation from value
+
+- loads: set value from string representation
+- dumps: generate string representation from value

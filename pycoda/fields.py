@@ -1,21 +1,17 @@
-from __future__ import unicode_literals
-
+import abc
+import datetime
+import decimal
 import re
-from abc import ABCMeta, abstractmethod
-from datetime import datetime
-from decimal import Decimal
-
-from six import with_metaclass
 
 
-class Field(with_metaclass(ABCMeta, object)):
+class Field(metaclass=abc.ABCMeta):
     def __init__(self, position, length, value=None, tag=None):
         self.position = position
         self.length = length
         self.value = value
         self.tag = tag
 
-    @abstractmethod
+    @abc.abstractmethod
     def _regex(self):
         """Regular expression used in loading the value from a string"""
 
@@ -28,18 +24,18 @@ class Field(with_metaclass(ABCMeta, object)):
             )
         return match.group("value")
 
-    @abstractmethod
+    @abc.abstractmethod
     def dumps(self):
         """Dump the value in the format such it can be picked up elsewhere"""
 
-    @abstractmethod
+    @abc.abstractmethod
     def loads(self, string):
         """Parse value from given string, using the field's available regex"""
 
 
 class StringField(Field):
     def __init__(self, position, length, value=None, tag=None, pad="", align="<"):
-        super(StringField, self).__init__(position, length, value=value, tag=tag)
+        super().__init__(position, length, value=value, tag=tag)
         self.pad = pad
         self.align = align
 
@@ -49,7 +45,7 @@ class StringField(Field):
         )
 
     def _parse(self, string):
-        return super(StringField, self)._parse(string)
+        return super()._parse(string)
 
     def dumps(self):
         value = self.value if self.value else ""
@@ -62,45 +58,43 @@ class StringField(Field):
 
 class EmptyField(StringField):
     def __init__(self, position, length, tag=None):
-        super(EmptyField, self).__init__(position, length, value=None, tag=tag)
+        super().__init__(position, length, value=None, tag=tag)
 
     def _regex(self):
-        return super(EmptyField, self)._regex()
+        return super()._regex()
 
     def _parse(self, string):
-        return super(EmptyField, self)._parse(string)
+        return super()._parse(string)
 
     def dumps(self):
-        return super(EmptyField, self).dumps()
+        return super().dumps()
 
     def loads(self, string):
-        super(EmptyField, self).loads(string)
+        super().loads(string)
 
 
 class ZeroesField(StringField):
     def __init__(self, position, length, tag=None):
-        super(ZeroesField, self).__init__(position, length, tag=tag, pad="0")
+        super().__init__(position, length, tag=tag, pad="0")
 
     def _regex(self):
-        return super(ZeroesField, self)._regex()
+        return super()._regex()
 
     def _parse(self, string):
-        return super(ZeroesField, self)._parse(string)
+        return super()._parse(string)
 
     def dumps(self):
-        return super(ZeroesField, self).dumps()
+        return super().dumps()
 
     def loads(self, string):
-        super(ZeroesField, self).loads(string)
+        super().loads(string)
 
 
 class NumericField(StringField):
     def __init__(
         self, position, length, value=None, tag=None, pad=0, align=">", head="", tail=""
     ):
-        super(NumericField, self).__init__(
-            position, length, value=value, tag=tag, pad=pad, align=align
-        )
+        super().__init__(position, length, value=value, tag=tag, pad=pad, align=align)
         self.head = head
         self.tail = tail
 
@@ -111,7 +105,7 @@ class NumericField(StringField):
         )
 
     def _parse(self, string):
-        return super(NumericField, self)._parse(string)
+        return super()._parse(string)
 
     def dumps(self):
         value = self.value if self.value else 0
@@ -139,16 +133,14 @@ class DateField(StringField):
         align="<",
         date_format="%d%m%y",
     ):
-        super(DateField, self).__init__(
-            position, length, value=value, tag=tag, pad=pad, align=align
-        )
+        super().__init__(position, length, value=value, tag=tag, pad=pad, align=align)
         self.date_format = date_format
 
     def _regex(self):
         return r"^(?P<value>\d{{{self.length}}})$".format(self=self)
 
     def _parse(self, string):
-        return super(DateField, self)._parse(string)
+        return super()._parse(string)
 
     def dumps(self):
         if self.value is None:
@@ -158,7 +150,7 @@ class DateField(StringField):
 
     def loads(self, string):
         date_string = self._parse(string)
-        self.value = datetime.strptime(date_string, self.date_format).date()
+        self.value = datetime.datetime.strptime(date_string, self.date_format).date()
 
 
 class BalanceField(Field):
@@ -166,9 +158,7 @@ class BalanceField(Field):
     DECIMAL_PLACES = 3
 
     def __init__(self, position, value=None, tag=None, pad="0"):
-        super(BalanceField, self).__init__(
-            position, BalanceField.LENGTH, value=value, tag=tag
-        )
+        super().__init__(position, BalanceField.LENGTH, value=value, tag=tag)
         self.pad = pad
 
     def _regex(self):
@@ -179,17 +169,17 @@ class BalanceField(Field):
 
     def dumps(self):
         if self.value is None:
-            value_tuple = Decimal(0).as_tuple()
+            value_tuple = decimal.Decimal(0).as_tuple()
         else:
             value_tuple = self.value.as_tuple()
-        shifted = Decimal((value_tuple.sign, value_tuple.digits, 0))
+        shifted = decimal.Decimal((value_tuple.sign, value_tuple.digits, 0))
         dump_format = "{shifted:{self.pad}{self.LENGTH}f}"
         return dump_format.format(self=self, shifted=shifted)
 
     def loads(self, string):
-        parsed = Decimal(string)
+        parsed = decimal.Decimal(string)
         parsed_tuple = parsed.as_tuple()
-        self.value = Decimal(
+        self.value = decimal.Decimal(
             (parsed_tuple.sign, parsed_tuple.digits, -BalanceField.DECIMAL_PLACES)
         )
 
@@ -198,7 +188,7 @@ class BooleanField(StringField):
     def __init__(
         self, position, length, value=False, tag=None, true_value="1", false_value=" "
     ):
-        super(BooleanField, self).__init__(position, length, value=value, tag=tag)
+        super().__init__(position, length, value=value, tag=tag)
         if len(true_value) != length:
             raise ValueError("true_value has incorrect length")
         self.true_value = true_value
@@ -207,10 +197,10 @@ class BooleanField(StringField):
         self.false_value = false_value
 
     def _regex(self):
-        return super(BooleanField, self)._regex()
+        return super()._regex()
 
     def _parse(self, string):
-        return super(BooleanField, self)._parse(string)
+        return super()._parse(string)
 
     def dumps(self):
         if self.value:

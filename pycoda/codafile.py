@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from os import linesep
 
 from pycoda.records import (
@@ -36,7 +34,7 @@ for record_type in RECORD_TYPES:
     record_map[(record_type.IDENTIFICATION, record_type.ARTICLE)] = record_type
 
 
-class CodaFile(object):
+class CodaFile:
     def __init__(self, records=None):
         self.records = records or []
 
