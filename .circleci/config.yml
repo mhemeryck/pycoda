@@ -14,7 +14,7 @@ references:
 jobs:
   build:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/python:3.9
 
     steps:
       - checkout
@@ -30,7 +30,7 @@ jobs:
             - "/home/circleci/.local/share/virtualenvs/"
   lint:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/python:3.9
 
     steps:
       - checkout
@@ -43,10 +43,10 @@ jobs:
       - run:
           name: Isort import order check
           command: |
-            pipenv run isort -c
+            pipenv run isort -c .
   test:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/python:3.9
 
     steps:
       - checkout
@@ -62,7 +62,7 @@ jobs:
             pipenv run coveralls
   check:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/python:3.9
 
     steps:
       - checkout
@@ -74,7 +74,7 @@ jobs:
             pipenv check
   deploy:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/python:3.9
 
     steps:
       - checkout

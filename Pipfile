@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-black = "==18.9b0"
+black = "==20.8b1"
 pytest-cov = "*"
 isort = "*"
 coveralls = "*"
@@ -16,4 +16,4 @@ pytest-socket = "*"
 factory-boy = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
