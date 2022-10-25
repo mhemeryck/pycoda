@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "pycoda"
+version = "0.3.16"
+description = ""
+authors = ["Martijn Hemeryck <martijn.hemeryck@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+black = "^22.10.0"
+pytest-cov = "^4.0.0"
+isort = "^5.10.1"
+factory-boy = "^3.2.1"
+pytest-socket = "^0.5.1"
+coveralls = "^3.3.1"
+flake8 = "^5.0.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts="--disable-socket --cov=pycoda --cov-report term-missing:skip-covered"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+combine_as_imports = true
+line_length = 80
