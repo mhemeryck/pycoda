@@ -1,6 +1,6 @@
 # pycoda
 
-[![CircleCI](https://circleci.com/gh/mhemeryck/pycoda.svg?style=svg)](https://circleci.com/gh/mhemeryck/pycoda)
+[![CI status](https://github.com/mhemeryck/pycoda/actions/workflows/main.yaml)](https://github.com/mhemeryck/pycoda/actions/workflows/main.yaml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/mhemeryck/pycoda/badge.svg)](https://coveralls.io/github/mhemeryck/pycoda)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://badge.fury.io/py/codapy.svg)](https://badge.fury.io/py/codapy)
