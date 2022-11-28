@@ -180,7 +180,8 @@ class BalanceField(Field):
             value_tuple = Decimal(0).as_tuple()
         else:
             value_tuple = self.value.as_tuple()
-        shifted = Decimal((value_tuple.sign, value_tuple.digits, 0))
+        # Always use a positive sign here
+        shifted = Decimal((0, value_tuple.digits, 0))
         dump_format = "{shifted:{self.pad}{self.LENGTH}f}"
         return dump_format.format(self=self, shifted=shifted)
 
