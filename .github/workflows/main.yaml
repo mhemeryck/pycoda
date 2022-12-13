@@ -18,6 +18,8 @@ jobs:
         run: poetry check
       - name: Install package
         run: poetry install
+        env:
+          PYTHON_KEYRING_BACKEND: "keyring.backends.null.Keyring"
       - name: Lint
         run: poetry run flake8 .
       - name: Autoformat check
@@ -46,6 +48,8 @@ jobs:
           cache: "poetry"
       - name: Install package
         run: poetry install
+        env:
+          PYTHON_KEYRING_BACKEND: "keyring.backends.null.Keyring"
       - name: Create packages
         run: |
           poetry run python setup.py sdist
